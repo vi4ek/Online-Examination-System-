@@ -1,0 +1,157 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Faculty &amp; Staff Directory — ExamPro SPPU{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm mb-1">
+      <span>Academic Personnel</span>
+      <span>&bull;</span>
+      <span>Department Faculty &amp; Examiners</span>
+    </div>
+    <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Faculty &amp; Staff Directory</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+      Authorized teaching faculty, course examiners, and examination personnel for the Department of MCA
+    </p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')" class="h-11 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">person_add</span>
+      <span>Enroll Faculty</span>
+    </button>
+  </div>
+</div>
+
+<!-- Authorized Faculty Directory Table -->
+<div class="space-y-space-sm">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h2 class="font-headline-md text-headline-md text-on-surface">Authorized Faculty Members</h2>
+      <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium">
+        {{ approved_staff|length }} Active Members
+      </span>
+    </div>
+  </div>
+
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden border border-surface-container-highest/60">
+    <div class="overflow-x-auto w-full">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider select-none">
+            <th class="py-3.5 pl-6 pr-4">Faculty Member</th>
+            <th class="py-3.5 px-4">Department &amp; Role</th>
+            <th class="py-3.5 px-4">Contact Email</th>
+            <th class="py-3.5 px-4">Phone Number</th>
+            <th class="py-3.5 px-4">Exams Configured</th>
+            <th class="py-3.5 px-4">Status</th>
+            <th class="py-3.5 pl-4 pr-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-container font-body-md text-body-md text-on-surface">
+          {% for s in approved_staff %}
+            <tr class="hover:bg-surface-container-low/40 transition-colors">
+              <td class="py-4 pl-6 pr-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    {{ s.full_name[:2]|upper }}
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-title text-title text-on-surface font-semibold">{{ s.full_name }}</span>
+                    <span class="text-xs text-secondary font-mono">ID: #{{ s.id }} &bull; @{{ s.username }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <div class="font-medium text-on-surface text-sm">{{ s.designation or 'Faculty Member' }}</div>
+                <div class="text-xs text-secondary">{{ s.department or 'Department of MCA' }}</div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant font-body-sm">
+                {{ s.email }}
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-mono text-xs">
+                {{ s.contact_number or '—' }}
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-semibold">
+                {{ s.exams_created }} exams
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31] font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#176B31]"></span>
+                  Authorized
+                </span>
+              </td>
+              <td class="py-4 pl-4 pr-6 whitespace-nowrap text-right">
+                <form action="{{ url_for('admin_delete_staff', user_id=s.id) }}" method="POST" onsubmit="return confirm('Revoke authorization and remove {{ s.full_name }}?');" class="inline">
+                  <button type="submit" class="h-8 px-3 rounded-lg bg-surface-container text-on-surface-variant hover:bg-error-container hover:text-on-error-container text-label-sm font-medium transition-colors cursor-pointer">
+                    Revoke Access
+                  </button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="7" class="py-8 text-center text-on-surface-variant font-body-sm">
+                No active faculty members registered yet. Click &ldquo;Enroll Faculty&rdquo; to add professors.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Enroll Faculty Modal -->
+<div id="addFacultyModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl shadow-xl max-w-md w-full p-6">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container-highest">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Enroll New Faculty Member</h3>
+      <button onclick="document.getElementById('addFacultyModal').classList.add('hidden')" class="text-secondary hover:text-on-surface">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form method="POST" action="{{ url_for('admin_create_staff') }}" class="pt-4 space-y-3">
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name &amp; Title</label>
+        <input type="text" name="full_name" required placeholder="e.g. Dr. Priya S. Deshmukh" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Username / Faculty ID</label>
+          <input type="text" name="username" required placeholder="e.g. prof_deshmukh" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Designation</label>
+          <input type="text" name="designation" placeholder="e.g. Associate Professor" value="Assistant Professor" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+        </div>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Department</label>
+        <input type="text" name="department" value="Department of MCA" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Academic Email</label>
+        <input type="email" name="email" required placeholder="e.g. priya.deshmukh@acmi.edu.in" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+        <input type="text" name="contact_number" placeholder="+91 98220 XXXXX" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+        <input type="text" name="password" value="staff123" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="document.getElementById('addFacultyModal').classList.add('hidden')" class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+          Cancel
+        </button>
+        <button type="submit" class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+          Enroll Faculty
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

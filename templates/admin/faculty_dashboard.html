@@ -1,0 +1,217 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Faculty Administration Console — Overview Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Faculty &amp; Staff Overview Dashboard</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">Savitribai Phule Pune University MCA Examination Management</p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <a href="{{ url_for('admin_questions_page') }}" class="h-11 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container-highest">
+      <span class="material-symbols-outlined text-[20px]">add</span>
+      <span>Add Question</span>
+    </a>
+    <a href="{{ url_for('admin_exams_page') }}" class="h-11 px-5 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity">
+      <span class="material-symbols-outlined text-[20px]">add</span>
+      <span>Schedule new exam</span>
+    </a>
+  </div>
+</div>
+
+<!-- Key Metrics (4 Stat Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+  <!-- Stat 1: Configured Exams -->
+  <div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-surface-container-highest/60">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md">Configured exams</span>
+      <span class="material-symbols-outlined text-[20px]">tune</span>
+    </div>
+    <div>
+      <div class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">
+        {{ published_exams }} <span class="text-secondary text-headline-md font-normal">/ {{ total_exams }}</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Active academic term</div>
+    </div>
+  </div>
+
+  <!-- Stat 2: Question Bank -->
+  <div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-surface-container-highest/60">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md">Question bank</span>
+      <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+    </div>
+    <div>
+      <div class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">{{ total_questions }}</div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Approved MCQ modules</div>
+    </div>
+  </div>
+
+  <!-- Stat 3: Enrolled Candidates -->
+  <div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-surface-container-highest/60">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md">Enrolled candidates</span>
+      <span class="material-symbols-outlined text-[20px]">groups</span>
+    </div>
+    <div>
+      <div class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">{{ total_candidates }}</div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Verified MCA batch</div>
+    </div>
+  </div>
+
+  <!-- Stat 4: Evaluated Attempts -->
+  <div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-surface-container-highest/60">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md">Evaluated attempts</span>
+      <span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-space-sm">
+        <span class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">{{ total_submissions }}</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31]">
+          {{ pass_rate }}% pass rate
+        </span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Total submitted papers</div>
+    </div>
+  </div>
+</div>
+
+<!-- Active Examination Schedules Card -->
+<div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] mb-space-lg border border-surface-container-highest/60">
+  <div class="flex items-center justify-between mb-space-md">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Active examination schedules</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Scheduled and ongoing term assessments for current semester</p>
+    </div>
+    <div class="flex items-center gap-space-xs">
+      <a href="{{ url_for('admin_exams_page') }}" class="h-9 px-3.5 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container flex items-center gap-1">
+        <span>View all exams</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="text-on-surface-variant font-label-md text-label-md bg-surface-container-low/60 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Exam title</th>
+          <th class="py-3 px-4 font-medium">Subject</th>
+          <th class="py-3 px-4 font-medium">Duration</th>
+          <th class="py-3 px-4 font-medium">Questions</th>
+          <th class="py-3 px-4 font-medium">Status</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container/60">
+        {% for exam in recent_exams %}
+        <tr class="hover:bg-surface-container-low/40 transition-colors">
+          <td class="py-4 px-4 font-body-md text-body-md text-on-surface font-medium">
+            {{ exam.title }}
+          </td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">
+            <span class="px-2 py-0.5 rounded-md bg-surface-container text-secondary font-medium">{{ exam.subject_code or 'MCA' }}</span>
+          </td>
+          <td class="py-4 px-4 font-body-md text-body-md text-on-surface-variant">{{ exam.duration_minutes }} mins</td>
+          <td class="py-4 px-4 font-body-md text-body-md text-on-surface-variant">{{ exam.question_count }} questions</td>
+          <td class="py-4 px-4">
+            {% if exam.status == 'Published' %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31]">
+                Active
+              </span>
+            {% else %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-secondary">
+                {{ exam.status }}
+              </span>
+            {% endif %}
+          </td>
+          <td class="py-4 px-4 text-right">
+            <a href="{{ url_for('admin_exams_page') }}" class="inline-flex items-center h-9 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container">
+              Manage
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="py-8 text-center text-secondary">
+            No examination schedules found. Click "Schedule new exam" above to configure your first session.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Recent Evaluated Submissions Table -->
+<div class="bg-surface-container-lowest rounded-[18px] p-space-lg shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] border border-surface-container-highest/60">
+  <div class="flex items-center justify-between mb-space-md">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Recent evaluated submissions</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Candidate assessment scorecards logged from live assessment sessions</p>
+    </div>
+    <div class="flex items-center gap-space-xs">
+      <a href="{{ url_for('admin_reports_page') }}" class="h-9 px-3.5 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container flex items-center gap-1">
+        <span>View all reports</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="text-on-surface-variant font-label-md text-label-md bg-surface-container-low/60 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Candidate</th>
+          <th class="py-3 px-4 font-medium">Roll Number</th>
+          <th class="py-3 px-4 font-medium">Exam</th>
+          <th class="py-3 px-4 font-medium">Score</th>
+          <th class="py-3 px-4 font-medium">Status</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container/60">
+        {% for sub in recent_submissions %}
+        <tr class="hover:bg-surface-container-low/40 transition-colors">
+          <td class="py-4 px-4 font-body-md text-body-md text-on-surface font-medium">
+            {{ sub.full_name }}
+          </td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">
+            <code>{{ sub.roll_number }}</code>
+          </td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">
+            {{ sub.exam_title }}
+          </td>
+          <td class="py-4 px-4 font-body-md text-body-md text-on-surface font-semibold">
+            {{ sub.score }} / {{ sub.total_marks }} <span class="text-secondary font-normal text-body-sm">({{ sub.percentage }}%)</span>
+          </td>
+          <td class="py-4 px-4">
+            {% if sub.status == 'Passed' %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31]">
+                Passed
+              </span>
+            {% else %}
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FFDAD6] text-[#BA1A1A]">
+                Failed
+              </span>
+            {% endif %}
+          </td>
+          <td class="py-4 px-4 text-right">
+            <a href="{{ url_for('admin_view_result', submission_id=sub.id) }}" class="inline-flex items-center h-9 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container">
+              Scorecard
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="py-8 text-center text-secondary">
+            No submissions recorded yet.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

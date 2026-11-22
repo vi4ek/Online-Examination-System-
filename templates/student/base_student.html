@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Portal — ExamPro SPPU{% endblock %}
+
+{% block layout %}
+<!-- Fixed Top Navigation Header -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+  <div class="h-16 max-w-7xl mx-auto px-margin flex items-center justify-between gap-space-lg">
+    <div class="flex items-center gap-space-md">
+      <a href="{{ url_for('student_dashboard') }}" class="flex items-center gap-space-sm">
+        <div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm">SP</div>
+        <span class="font-title text-title text-on-surface">ExamPro SPPU MCA</span>
+      </a>
+    </div>
+
+    <!-- Candidate Session Badge & Logout -->
+    <div class="flex items-center gap-space-md">
+      <a href="{{ url_for('student_profile_page') }}" class="hidden sm:flex items-center gap-space-sm py-1.5 px-space-md rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors border border-surface-container-highest/60" title="Manage Profile & Settings">
+        <div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-[10px] overflow-hidden">
+          {% if current_user.profile_photo %}
+            <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.profile_photo) }}" alt="Avatar" class="w-full h-full object-cover"/>
+          {% else %}
+            {{ (current_user.full_name or 'ST')[:2]|upper }}
+          {% endif %}
+        </div>
+        <span class="font-label-sm text-label-sm">
+          {{ current_user.full_name or 'Enrolled Candidate' }}
+          <span class="text-secondary">(PRN: {{ current_user.roll_number or 'N/A' }})</span>
+        </span>
+      </a>
+      <a class="inline-flex items-center justify-center h-10 px-space-md rounded-xl bg-error-container text-on-error-container font-label-md text-label-md hover:opacity-90 transition-opacity gap-1" href="{{ url_for('student_logout') }}">
+        <span class="material-symbols-outlined text-[18px]">logout</span>
+        <span>Sign out</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="w-full pt-16 bg-surface min-h-[calc(100vh-160px)]">
+  <div class="flex flex-col w-full">
+    <!-- Sub-Navigation / Secondary Academic Context Navigation -->
+    <div class="w-full bg-surface-container-lowest shadow-sm border-b border-surface-container-highest/60">
+      <div class="max-w-7xl mx-auto px-margin py-space-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
+        <div class="flex items-center gap-space-lg overflow-x-auto w-full sm:w-auto">
+          <a class="font-label-md text-label-md flex items-center gap-space-xs py-space-xs transition-colors {% if request.endpoint == 'student_dashboard' %}text-primary font-semibold{% else %}text-on-surface-variant hover:text-on-surface{% endif %}" href="{{ url_for('student_dashboard') }}">
+            <span class="material-symbols-outlined text-[18px]" {% if request.endpoint == 'student_dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
+            <span>Home</span>
+          </a>
+          <a class="font-label-md text-label-md flex items-center gap-space-xs py-space-xs transition-colors {% if request.endpoint == 'student_exams_page' %}text-primary font-semibold{% else %}text-on-surface-variant hover:text-on-surface{% endif %}" href="{{ url_for('student_exams_page') }}">
+            <span class="material-symbols-outlined text-[18px]">assignment</span>
+            <span>My exams</span>
+          </a>
+          <a class="font-label-md text-label-md flex items-center gap-space-xs py-space-xs transition-colors {% if request.endpoint == 'student_history_page' %}text-primary font-semibold{% else %}text-on-surface-variant hover:text-on-surface{% endif %}" href="{{ url_for('student_history_page') }}">
+            <span class="material-symbols-outlined text-[18px]">analytics</span>
+            <span>Results</span>
+          </a>
+          <a class="font-label-md text-label-md flex items-center gap-space-xs py-space-xs transition-colors {% if request.endpoint == 'student_profile_page' %}text-primary font-semibold{% else %}text-on-surface-variant hover:text-on-surface{% endif %}" href="{{ url_for('student_profile_page') }}">
+            <span class="material-symbols-outlined text-[18px]">account_circle</span>
+            <span>Profile</span>
+          </a>
+        </div>
+        <div class="flex sm:hidden items-center gap-space-sm py-1 px-3 rounded-lg bg-surface-container-low text-on-surface-variant text-xs">
+          <span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+          <span>{{ current_user.roll_number }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Primary Content Canvas -->
+    <div class="w-full max-w-7xl mx-auto px-margin py-space-lg space-y-space-lg">
+      <!-- Flash Alert Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="space-y-2">
+            {% for category, message in messages %}
+              <div class="p-4 rounded-xl text-body-sm flex items-center justify-between gap-2 shadow-sm {% if category == 'danger' or category == 'warning' %}bg-error-container text-on-error-container{% elif category == 'success' %}bg-[#E8F6EC] text-[#176B31]{% else %}bg-secondary-container text-on-secondary-container{% endif %}">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-[20px]">
+                    {% if category == 'success' %}check_circle{% elif category == 'danger' %}error{% else %}info{% endif %}
+                  </span>
+                  <span>{{ message }}</span>
+                </div>
+                <button type="button" class="cursor-pointer text-current opacity-70 hover:opacity-100" onclick="this.parentElement.remove();">&times;</button>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</main>
+
+<footer class="w-full bg-surface-container-low shadow-[0_-1px_6px_rgba(0,0,0,0.02)] py-margin mt-auto border-t border-surface-container-highest/60">
+  <div class="max-w-7xl mx-auto px-margin flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+    <p>&copy; 2024 Savitribai Phule Pune University. ExamPro MCA Portal.</p>
+    <div class="flex items-center gap-space-lg">
+      <span class="hover:text-on-surface transition-colors">Exam Guidelines</span>
+      <span class="hover:text-on-surface transition-colors">Support Desk</span>
+      <span class="hover:text-on-surface transition-colors">Digital Ledger Verified</span>
+    </div>
+  </div>
+</footer>
+{% endblock %}

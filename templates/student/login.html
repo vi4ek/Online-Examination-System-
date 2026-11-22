@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Student Portal Sign In — Savitribai Phule Pune University{% endblock %}
+
+{% block body_class %}min-h-screen flex items-center justify-center p-margin{% endblock %}
+
+{% block layout %}
+<main class="w-full max-w-xl">
+  <div class="flex flex-col w-full">
+    <div class="w-full max-w-[420px] mx-auto flex flex-col items-center">
+      <!-- Institutional Identification -->
+      <header class="flex flex-col items-center text-center mb-8">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 shadow-sm text-primary">
+          <span class="material-symbols-outlined" style="font-size: 26px;">account_balance</span>
+        </div>
+        <span class="font-label-sm text-label-sm text-secondary tracking-normal uppercase mb-1">
+          Savitribai Phule Pune University
+        </span>
+        <h2 class="font-title text-title text-on-surface">
+          Department of MCA
+        </h2>
+      </header>
+
+      <!-- Main Authentication Surface -->
+      <div class="w-full bg-surface-container-lowest rounded-[20px] shadow-sm p-8 sm:p-9 flex flex-col border border-surface-container-highest/60">
+        <!-- Card Heading -->
+        <div class="flex flex-col mb-7">
+          <div class="flex items-center justify-between mb-2">
+            <h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+              Student portal
+            </h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container text-secondary">
+              MCA Dept
+            </span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Sign in with your Permanent Registration Number (PRN) or roll number to access examination hall and results.
+          </p>
+        </div>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mb-5 space-y-2">
+              {% for category, message in messages %}
+                <div class="p-3 rounded-xl text-body-sm flex items-center gap-2 {% if category == 'danger' or category == 'warning' %}bg-error-container text-on-error-container{% else %}bg-secondary-container text-on-secondary-container{% endif %}">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                  <span>{{ message }}</span>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- Sign-in Form -->
+        <form class="flex flex-col gap-5" method="POST" action="{{ url_for('student_login_page') }}">
+          <!-- PRN / Identifier Input -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-label-md text-on-surface font-medium" for="studentIdentifier">
+              PRN, roll number or email
+            </label>
+            <div class="relative flex items-center">
+              <input autocomplete="username" class="w-full h-11 px-3.5 bg-surface rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline transition-colors outline-none focus:ring-2 focus:ring-primary-container border border-surface-container-highest" id="studentIdentifier" name="username" placeholder="e.g. aarav or MCA2026-001" required="" spellcheck="false" type="text" autofocus/>
+            </div>
+            <span class="font-label-sm text-label-sm text-secondary">Format: 10-digit PRN or student roll (e.g., MCA2026-001)</span>
+          </div>
+
+          <!-- Password Input -->
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-label-md text-label-md text-on-surface font-medium" for="studentPassword">
+                Password
+              </label>
+              <a class="font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors focus:outline-none" href="#">
+                Forgot password?
+              </a>
+            </div>
+            <div class="relative flex items-center">
+              <input class="w-full h-11 px-3.5 pr-11 bg-surface rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline transition-colors outline-none focus:ring-2 focus:ring-primary-container border border-surface-container-highest" id="studentPassword" name="password" placeholder="Enter password" required="" type="password"/>
+              <button aria-label="Toggle password visibility" class="absolute right-2.5 w-7 h-7 flex items-center justify-center text-outline hover:text-on-surface transition-colors rounded-lg focus:outline-none" onclick="const p = document.getElementById('studentPassword'); p.type = p.type === 'password' ? 'text' : 'password';" type="button">
+                <span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Session Security Notice -->
+          <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low text-secondary mt-1">
+            <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
+            <span class="font-label-sm text-label-sm">Secured session for semester examination</span>
+          </div>
+
+          <!-- Primary CTA -->
+          <button class="w-full h-11 bg-primary-container hover:bg-primary active:bg-primary text-on-primary font-label-md text-label-md rounded-xl flex items-center justify-center transition-colors shadow-sm mt-2 focus:outline-none cursor-pointer" type="submit">
+            Sign in to candidate portal
+          </button>
+        </form>
+
+        <!-- Institutional Portal Switcher Navigation -->
+        <div class="pt-6 mt-6 border-t border-surface-container flex flex-col items-center gap-3">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="{{ url_for('admin_login_page') }}">
+              <span class="material-symbols-outlined" style="font-size: 16px;">badge</span>
+              Faculty login
+            </a>
+            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="{{ url_for('student_register_page') }}">
+              <span class="material-symbols-outlined" style="font-size: 16px;">person_add</span>
+              Register
+            </a>
+            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="{{ url_for('home') }}">
+              <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+              Home
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supplementary Compliance Meta -->
+      <div class="mt-8 flex flex-col items-center text-center gap-2">
+        <div class="flex items-center gap-2 text-secondary">
+          <span class="font-label-sm text-label-sm">Academic Year [2024–2025]</span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          <span class="font-label-sm text-label-sm">ExamPro v4.2</span>
+        </div>
+        <p class="font-label-sm text-label-sm text-outline">
+          Ganeshkhind, Pune, Maharashtra 411007
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Exams Management — SPPU MCA ExamPro{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm mb-1">
+      <span>Curriculum Assessments</span>
+      <span>&bull;</span>
+      <span>Semester Sessions</span>
+    </div>
+    <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Examination Schedules</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+      Configure assessment parameters, duration thresholds, and question allocations
+    </p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <button type="button" onclick="document.getElementById('scheduleSection').scrollIntoView({behavior: 'smooth'})" class="h-11 px-5 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">add</span>
+      <span>Schedule new exam</span>
+    </button>
+  </div>
+</div>
+
+<!-- Exams Table Card -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] overflow-hidden mb-space-xl border border-surface-container-highest/60">
+  <div class="p-6 border-b border-surface-container flex items-center justify-between">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Configured Examinations</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Active and draft tests available to candidate portals</p>
+    </div>
+    <span class="px-3 py-1 rounded-full bg-surface-container text-secondary font-label-sm text-label-sm">
+      {{ exams|length }} Sessions Listed
+    </span>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-surface-container-low/60 text-secondary font-label-sm text-label-sm uppercase tracking-wider select-none">
+          <th class="py-3.5 px-6 font-medium">Course Code &amp; Title</th>
+          <th class="py-3.5 px-4 font-medium">Subject</th>
+          <th class="py-3.5 px-4 font-medium">Duration</th>
+          <th class="py-3.5 px-4 font-medium">Total Marks</th>
+          <th class="py-3.5 px-4 font-medium">Pass Benchmark</th>
+          <th class="py-3.5 px-4 font-medium">Questions</th>
+          <th class="py-3.5 px-4 font-medium">Status</th>
+          <th class="py-3.5 px-6 font-medium text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container/60 font-body-md text-body-md text-on-surface">
+        {% for exam in exams %}
+        <tr class="hover:bg-surface-container-low/40 transition-colors">
+          <td class="py-4 px-6">
+            <div class="flex flex-col">
+              <span class="font-label-md text-label-md text-on-surface font-semibold">{{ exam.title }}</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">{{ exam.instructions or 'Standard MCQ assessment' }}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface">
+            <span class="px-2 py-0.5 rounded-md bg-surface-container text-secondary font-medium">{{ exam.subject_code }}</span>
+          </td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface">{{ exam.duration_minutes }} mins</td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface font-semibold">{{ exam.total_marks }} marks</td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface">{{ exam.pass_marks }} marks</td>
+          <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface">{{ exam.question_count }} Qs</td>
+          <td class="py-4 px-4">
+            {% if exam.status == 'Published' %}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#e8f6ec] text-[#176b31]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#176b31]"></span>
+                Published
+              </span>
+            {% else %}
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-[#f0f0f2] text-[#515154]">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#515154]"></span>
+                Draft
+              </span>
+            {% endif %}
+          </td>
+          <td class="py-4 px-6 text-right whitespace-nowrap">
+            <form action="{{ url_for('admin_toggle_exam_status', exam_id=exam.id) }}" method="POST" class="inline">
+              {% if exam.status == 'Published' %}
+                <input type="hidden" name="status" value="Draft">
+                <button type="submit" class="inline-flex items-center justify-center h-8 px-3 rounded-lg bg-surface-container-lowest text-on-surface font-label-sm text-label-sm border border-surface-container hover:bg-surface-container transition-colors shadow-sm">
+                  Pause
+                </button>
+              {% else %}
+                <input type="hidden" name="status" value="Published">
+                <button type="submit" class="inline-flex items-center justify-center h-8 px-3 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm hover:opacity-90 transition-opacity shadow-sm">
+                  Publish
+                </button>
+              {% endif %}
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="8" class="py-8 text-center text-secondary">
+            No examinations configured yet. Complete the form below to publish your first exam.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Schedule New Exam Section -->
+<div id="scheduleSection" class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.03),0_4px_12px_rgba(0,0,0,0.02)] border border-surface-container-highest/60">
+  <div class="flex items-center gap-3 pb-6 mb-6 border-b border-surface-container">
+    <div class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-[22px]">calendar_today</span>
+    </div>
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Configure New Examination</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Set timetable, marks threshold, and select questions</p>
+    </div>
+  </div>
+
+  <form method="POST" action="{{ url_for('admin_exams_page') }}" class="flex flex-col gap-6">
+    <div class="flex flex-col gap-1.5">
+      <label class="font-label-md text-label-md text-on-surface font-medium" for="exam-title">
+        Examination Title <span class="text-error">*</span>
+      </label>
+      <input class="w-full h-11 px-3.5 bg-surface text-on-surface font-body-md text-body-md rounded-xl border border-surface-container-highest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="exam-title" name="title" type="text" placeholder="e.g. MCA-301: Advanced Database Systems Midterm" required/>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex flex-col gap-1.5">
+        <label class="font-label-md text-label-md text-on-surface font-medium" for="subject-select">
+          Curriculum Subject <span class="text-error">*</span>
+        </label>
+        <select class="w-full h-11 px-3.5 bg-surface text-on-surface font-body-md text-body-md rounded-xl border border-surface-container-highest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="subject-select" name="subject_id" required>
+          <option value="">-- Select Subject --</option>
+          {% for s in subjects %}
+            <option value="{{ s.id }}">{{ s.code }}: {{ s.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1.5">
+          <label class="font-label-md text-label-md text-on-surface font-medium" for="duration">
+            Duration (Minutes) <span class="text-error">*</span>
+          </label>
+          <input class="w-full h-11 px-3.5 bg-surface text-on-surface font-body-md text-body-md rounded-xl border border-surface-container-highest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="duration" name="duration_minutes" type="number" value="30" min="5" max="180" required/>
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="font-label-md text-label-md text-on-surface font-medium" for="pass-marks">
+            Pass Marks <span class="text-error">*</span>
+          </label>
+          <input class="w-full h-11 px-3.5 bg-surface text-on-surface font-body-md text-body-md rounded-xl border border-surface-container-highest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="pass-marks" name="pass_marks" type="number" value="6" min="1" max="100" required/>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label class="font-label-md text-label-md text-on-surface font-medium" for="instructions">
+        Candidate Instructions
+      </label>
+      <textarea class="w-full p-3.5 bg-surface text-on-surface font-body-md text-body-md rounded-xl border border-surface-container-highest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" id="instructions" name="instructions" rows="2" placeholder="e.g. Answer all questions. Each carries 2 marks. Test will auto-submit when the timer expires."></textarea>
+    </div>
+
+    <!-- Question Selection -->
+    <div class="flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <label class="font-label-md text-label-md text-on-surface font-medium">
+          Select Questions from Repository (Optional)
+        </label>
+        <span class="font-label-sm text-label-sm text-secondary">
+          Leave unchecked to auto-include all questions for chosen subject
+        </span>
+      </div>
+      <div class="max-h-56 overflow-y-auto rounded-xl border border-surface-container-highest p-3 bg-surface flex flex-col gap-2">
+        {% for q in available_questions %}
+          <label class="flex items-start gap-3 p-2 rounded-lg bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border border-surface-container">
+            <input type="checkbox" name="question_ids" value="{{ q.id }}" class="mt-1 w-4 h-4 text-primary rounded border-outline focus:ring-primary">
+            <div class="flex flex-col text-body-sm">
+              <span class="font-medium text-on-surface">
+                <span class="text-secondary font-mono">[{{ q.subject_code }}]</span> {{ q.question_text }}
+              </span>
+              <span class="text-secondary text-label-sm">Marks: {{ q.marks }} &bull; Correct: Option {{ q.correct_option }}</span>
+            </div>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pt-4 flex justify-end">
+      <button type="submit" class="h-11 px-6 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">check</span>
+        <span>Save and publish examination</span>
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Scorecard & Examination Result — ExamPro SPPU{% endblock %}
+
+{% block layout %}
+<div class="min-h-screen bg-surface flex flex-col items-center justify-center p-4 sm:p-8">
+  <div class="w-full max-w-4xl mx-auto flex flex-col items-center py-6">
+    <!-- Institutional Context Bar -->
+    <div class="w-full max-w-2xl mb-6 text-center">
+      <div class="inline-flex flex-wrap items-center justify-center gap-1.5 px-4 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-sm text-on-surface-variant font-label-sm text-label-sm shadow-sm">
+        <span class="font-medium text-on-surface">Savitribai Phule Pune University</span>
+        <span class="text-outline/40">&bull;</span>
+        <span>Department of MCA</span>
+        <span class="text-outline/40">&bull;</span>
+        <span>Candidate: <strong class="font-medium text-on-surface">{{ sub.full_name }}</strong></span>
+        <span class="text-outline/40">(PRN: {{ sub.roll_number }})</span>
+      </div>
+    </div>
+
+    <!-- Primary Results Card -->
+    <div class="w-full max-w-[680px] bg-surface-container-lowest rounded-[24px] shadow-sm p-6 sm:p-10 flex flex-col items-center text-center relative overflow-hidden border border-surface-container-highest/70">
+      <!-- Top University Emblem / Academic Header -->
+      <div class="flex flex-col items-center mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-surface-container-low flex items-center justify-center text-primary mb-3 shadow-inner">
+          <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+        </div>
+        <p class="font-label-sm text-label-sm text-secondary tracking-normal uppercase mb-1 font-semibold">
+          Term End Examination Assessment &bull; SPPU MCA
+        </p>
+        <h1 class="font-headline-md text-headline-md text-on-surface font-bold">
+          {{ sub.subject_name }}
+        </h1>
+        <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          {{ sub.exam_title }} <span class="text-secondary font-mono text-xs">({{ sub.subject_code }})</span>
+        </p>
+      </div>
+
+      <div class="w-full h-px bg-surface-container-high mb-8"></div>
+
+      <!-- Primary Score Section -->
+      <div class="flex flex-col items-center mb-8">
+        <div class="flex items-center justify-center gap-3">
+          <span class="text-[52px] sm:text-[60px] leading-none font-bold tracking-tight text-on-surface font-mono">
+            {{ sub.score }} / {{ sub.total_marks }}
+          </span>
+          {% if sub.status == 'Passed' %}
+            <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#E8F6EC] text-[#176B31] font-label-md text-label-md font-semibold tracking-tight shadow-sm">
+              Assessment Passed
+            </span>
+          {% else %}
+            <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#FFDAD6] text-[#BA1A1A] font-label-md text-label-md font-semibold tracking-tight shadow-sm">
+              Assessment Failed
+            </span>
+          {% endif %}
+        </div>
+        <p class="font-body-md text-body-md text-secondary mt-3">
+          <strong class="text-on-surface font-semibold">{{ sub.percentage }}% Score</strong>
+          <span class="mx-2 text-surface-container-highest">&bull;</span>
+          Qualifying Pass Benchmark: {{ sub.pass_marks }} Marks
+        </p>
+      </div>
+
+      <!-- Performance Metric Breakdown Cards -->
+      <div class="grid grid-cols-3 gap-3 w-full mb-8">
+        <div class="bg-surface-container-low rounded-xl p-4 flex flex-col items-center text-center">
+          <span class="font-label-sm text-label-sm text-secondary mb-1">Correct</span>
+          <span class="text-[28px] leading-8 font-bold text-[#176B31] mb-0.5">{{ stats.correct_count }}</span>
+          <span class="font-body-sm text-xs text-secondary">{{ (stats.correct_count / stats.total_questions * 100)|round(1) }}% accuracy</span>
+        </div>
+        <div class="bg-surface-container-low rounded-xl p-4 flex flex-col items-center text-center">
+          <span class="font-label-sm text-label-sm text-secondary mb-1">Incorrect</span>
+          <span class="text-[28px] leading-8 font-bold text-[#BA1A1A] mb-0.5">{{ stats.wrong_count }}</span>
+          <span class="font-body-sm text-xs text-secondary">{{ stats.wrong_count }} incorrect</span>
+        </div>
+        <div class="bg-surface-container-low rounded-xl p-4 flex flex-col items-center text-center">
+          <span class="font-label-sm text-label-sm text-secondary mb-1">Time Taken</span>
+          <span class="text-[24px] leading-8 font-bold text-on-surface mb-0.5 font-mono">
+            {{ (sub.time_taken_seconds // 60) }}m {{ (sub.time_taken_seconds % 60) }}s
+          </span>
+          <span class="font-body-sm text-xs text-secondary">of exam time</span>
+        </div>
+      </div>
+
+      <!-- Assessment Metadata Strip -->
+      <div class="w-full bg-surface rounded-xl p-4 mb-8 flex flex-col gap-2.5 text-left font-body-sm text-body-sm border border-surface-container-highest/50">
+        <div class="flex justify-between items-center text-on-surface">
+          <span class="text-secondary">Submission Timestamp</span>
+          <span class="font-medium font-mono text-xs">{{ sub.submitted_at }}</span>
+        </div>
+        <div class="w-full h-px bg-surface-container-high/60"></div>
+        <div class="flex justify-between items-center text-on-surface">
+          <span class="text-secondary">Candidate Roll Number</span>
+          <span class="font-medium font-mono">{{ sub.roll_number }}</span>
+        </div>
+        <div class="w-full h-px bg-surface-container-high/60"></div>
+        <div class="flex justify-between items-center text-on-surface">
+          <span class="text-secondary">Proctoring Telemetry</span>
+          {% if sub.tab_switches_count and sub.tab_switches_count > 0 %}
+            <span class="inline-flex items-center gap-1.5 font-medium text-[#BA1A1A]">
+              <span class="material-symbols-outlined text-[16px]">warning</span>
+              {{ sub.tab_switches_count }} Tab Switch Violation{% if sub.tab_switches_count > 1 %}s{% endif %} Logged
+            </span>
+          {% else %}
+            <span class="inline-flex items-center gap-1.5 font-medium text-[#176B31]">
+              <span class="material-symbols-outlined text-[16px]">verified_user</span>
+              Browser Locked &bull; Clean (0 Violations)
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Action Group -->
+      <div class="w-full flex flex-col gap-3">
+        <!-- Single Solid Primary Button: Role Appropriate -->
+        {% if is_admin_view %}
+          <a href="{{ url_for('admin_reports_page') }}" class="w-full h-11 px-5 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center hover:opacity-95 transition-opacity shadow-sm cursor-pointer font-semibold gap-2">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Return to Academic Reports</span>
+          </a>
+        {% else %}
+          <a href="{{ url_for('student_dashboard') }}" class="w-full h-11 px-5 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md flex items-center justify-center hover:opacity-95 transition-opacity shadow-sm cursor-pointer font-semibold gap-2">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span>Return to Candidate Dashboard</span>
+          </a>
+        {% endif %}
+
+        <div class="grid grid-cols-2 gap-3">
+          <a href="{{ url_for('download_result_csv', submission_id=sub.id) }}" class="w-full h-11 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-surface-container-highest" download>
+            <span class="material-symbols-outlined text-[18px] text-secondary">download</span>
+            <span>Download CSV Result</span>
+          </a>
+          <button type="button" onclick="window.print()" class="w-full h-11 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors cursor-pointer flex items-center justify-center gap-1.5 border border-surface-container-highest">
+            <span class="material-symbols-outlined text-[18px] text-secondary">print</span>
+            <span>Print Scorecard</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Systematic Ledger Footer -->
+    <div class="mt-6 flex items-center gap-2 text-secondary font-label-sm text-label-sm">
+      <span class="material-symbols-outlined text-[14px]">lock</span>
+      <span>ExamPro Savitribai Phule Pune University &bull; Verified digital ledger entry</span>
+    </div>
+
+    <!-- Detailed Question-by-Question Review -->
+    <div class="w-full max-w-4xl mt-10 space-y-4">
+      <div class="flex items-center justify-between pb-2 border-b border-surface-container-highest">
+        <h2 class="font-headline-md text-headline-md text-on-surface">Question Review &amp; Answer Key</h2>
+        <span class="font-label-sm text-label-sm text-secondary font-medium">{{ review_items|length }} Questions Evaluated</span>
+      </div>
+
+      {% for item in review_items %}
+        <div class="bg-surface-container-lowest rounded-2xl shadow-sm p-6 border border-surface-container-highest/70 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-title text-body-md font-semibold text-on-surface">
+              Question #{{ loop.index }}
+            </span>
+            <div>
+              {% if item.is_correct == 1 %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31] font-semibold">
+                  +{{ item.marks_awarded }} Marks (Correct)
+                </span>
+              {% elif item.selected_option %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FFDAD6] text-[#BA1A1A] font-semibold">
+                  0 Marks (Incorrect)
+                </span>
+              {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-high text-secondary font-medium">
+                  0 Marks (Unanswered)
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+          <p class="font-body-md text-on-surface leading-relaxed font-medium">
+            {{ item.question_text }}
+          </p>
+
+          <!-- 4 Options Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <!-- Option A -->
+            <div class="p-3.5 rounded-xl border flex items-center justify-between transition-colors {% if item.correct_option == 'A' %}bg-[#E8F6EC] border-[#176B31] text-[#176B31] font-medium{% elif item.selected_option == 'A' %}bg-[#FFDAD6] border-[#BA1A1A] text-[#BA1A1A]{% else %}bg-surface border-surface-container-highest text-on-surface{% endif %}">
+              <span><strong>A:</strong> {{ item.option_a }}</span>
+              {% if item.correct_option == 'A' %}
+                <span class="font-semibold text-xs text-[#176B31] flex items-center gap-0.5">&check; Correct Key</span>
+              {% elif item.selected_option == 'A' %}
+                <span class="font-semibold text-xs text-[#BA1A1A] flex items-center gap-0.5">&cross; Your Choice</span>
+              {% endif %}
+            </div>
+
+            <!-- Option B -->
+            <div class="p-3.5 rounded-xl border flex items-center justify-between transition-colors {% if item.correct_option == 'B' %}bg-[#E8F6EC] border-[#176B31] text-[#176B31] font-medium{% elif item.selected_option == 'B' %}bg-[#FFDAD6] border-[#BA1A1A] text-[#BA1A1A]{% else %}bg-surface border-surface-container-highest text-on-surface{% endif %}">
+              <span><strong>B:</strong> {{ item.option_b }}</span>
+              {% if item.correct_option == 'B' %}
+                <span class="font-semibold text-xs text-[#176B31] flex items-center gap-0.5">&check; Correct Key</span>
+              {% elif item.selected_option == 'B' %}
+                <span class="font-semibold text-xs text-[#BA1A1A] flex items-center gap-0.5">&cross; Your Choice</span>
+              {% endif %}
+            </div>
+
+            <!-- Option C -->
+            <div class="p-3.5 rounded-xl border flex items-center justify-between transition-colors {% if item.correct_option == 'C' %}bg-[#E8F6EC] border-[#176B31] text-[#176B31] font-medium{% elif item.selected_option == 'C' %}bg-[#FFDAD6] border-[#BA1A1A] text-[#BA1A1A]{% else %}bg-surface border-surface-container-highest text-on-surface{% endif %}">
+              <span><strong>C:</strong> {{ item.option_c }}</span>
+              {% if item.correct_option == 'C' %}
+                <span class="font-semibold text-xs text-[#176B31] flex items-center gap-0.5">&check; Correct Key</span>
+              {% elif item.selected_option == 'C' %}
+                <span class="font-semibold text-xs text-[#BA1A1A] flex items-center gap-0.5">&cross; Your Choice</span>
+              {% endif %}
+            </div>
+
+            <!-- Option D -->
+            <div class="p-3.5 rounded-xl border flex items-center justify-between transition-colors {% if item.correct_option == 'D' %}bg-[#E8F6EC] border-[#176B31] text-[#176B31] font-medium{% elif item.selected_option == 'D' %}bg-[#FFDAD6] border-[#BA1A1A] text-[#BA1A1A]{% else %}bg-surface border-surface-container-highest text-on-surface{% endif %}">
+              <span><strong>D:</strong> {{ item.option_d }}</span>
+              {% if item.correct_option == 'D' %}
+                <span class="font-semibold text-xs text-[#176B31] flex items-center gap-0.5">&check; Correct Key</span>
+              {% elif item.selected_option == 'D' %}
+                <span class="font-semibold text-xs text-[#BA1A1A] flex items-center gap-0.5">&cross; Your Choice</span>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if item.explanation %}
+            <div class="p-3.5 rounded-xl bg-surface-container-low text-body-sm text-on-surface-variant flex items-start gap-2 border border-surface-container-highest/60">
+              <span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">lightbulb</span>
+              <div>
+                <strong class="text-on-surface">Academic Rationale:</strong> {{ item.explanation }}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

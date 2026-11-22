@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty &amp; Staff Sign In — Department of MCA, SPPU{% endblock %}
+
+{% block layout %}
+<div class="min-h-screen bg-[#F5F5F7] flex flex-col items-center justify-center py-12 px-4 selection:bg-primary-fixed selection:text-on-primary-fixed">
+  <div class="w-full max-w-[400px] flex flex-col items-center">
+    
+    <!-- Clean Minimalist Header: Circular Emblem + Faculty Portal Title -->
+    <header class="flex flex-col items-center text-center mb-6">
+      <div class="w-14 h-14 rounded-full bg-white shadow-sm flex items-center justify-center mb-3 text-primary border border-[#E5E5E7]">
+        <svg class="w-7 h-7 text-[#0071e3]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+          <path d="M6 6h10"></path>
+          <path d="M6 10h10"></path>
+          <path d="M12 2v20"></path>
+        </svg>
+      </div>
+      <h1 class="text-[22px] font-semibold text-[#1B1B1D] tracking-tight">Faculty portal</h1>
+      <p class="text-[14px] text-[#565F67] mt-1 text-center">
+        Sign in to manage exams and results.
+      </p>
+    </header>
+
+    <!-- Sign In Card (Pure White #FFFFFF on Neutral #F5F5F7) -->
+    <div class="w-full bg-white rounded-[20px] shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.03)] p-7 sm:p-8 border border-[#E5E5E7] transition-all">
+      <form id="staffLoginForm" class="space-y-4" method="POST" action="{{ url_for('staff_login_page') }}">
+        <!-- Username / Staff ID Field -->
+        <div class="flex flex-col space-y-1.5">
+          <label class="text-[14px] font-medium text-[#1B1B1D] text-left" for="staffUsername">
+            Username or university email
+          </label>
+          <div class="relative">
+            <input 
+              autocomplete="username" 
+              class="w-full h-11 px-3.5 rounded-[12px] bg-white text-[#1B1B1D] placeholder:text-[#8E8E93] text-[15px] border border-[#E5E5E7] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 transition-all" 
+              id="staffUsername" 
+              name="username" 
+              placeholder="Faculty ID or email" 
+              required="" 
+              type="text" 
+              autofocus
+            />
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="flex flex-col space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="text-[14px] font-medium text-[#1B1B1D]" for="staffPassword">
+              Password
+            </label>
+            <a class="text-[13px] text-[#0071e3] hover:underline transition-colors focus:outline-none" href="#">
+              Forgot password?
+            </a>
+          </div>
+          <div class="relative flex items-center">
+            <input 
+              autocomplete="current-password" 
+              class="w-full h-11 pl-3.5 pr-11 rounded-[12px] bg-white text-[#1B1B1D] placeholder:text-[#8E8E93] text-[15px] border border-[#E5E5E7] focus:outline-none focus:border-[#0071e3] focus:ring-2 focus:ring-[#0071e3]/20 transition-all" 
+              id="staffPassword" 
+              name="password" 
+              placeholder="Enter password" 
+              required="" 
+              type="password"
+            />
+            <button 
+              aria-label="Toggle password visibility" 
+              class="absolute right-2.5 p-1 rounded-md text-[#8E8E93] hover:text-[#1B1B1D] transition-colors focus:outline-none" 
+              onclick="const p = document.getElementById('staffPassword'); p.type = p.type === 'password' ? 'text' : 'password';" 
+              type="button"
+            >
+              <span class="material-symbols-outlined text-[19px] leading-none align-middle select-none">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dedicated Error Spot Above Submit Button -->
+        <div id="staffErrorSpot" class="pt-1">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <div class="space-y-2">
+                {% for category, message in messages %}
+                  <div class="p-3 rounded-xl text-[13px] flex items-center gap-2.5 {% if category == 'danger' or category == 'warning' %}bg-[#FDF2F2] text-[#93000A] border border-[#F8D7DA]{% else %}bg-[#E8F6EC] text-[#176B31] border border-[#D1E7DD]{% endif %}">
+                    <span class="material-symbols-outlined text-[18px] shrink-0">
+                      {% if category == 'danger' or category == 'warning' %}error{% else %}check_circle{% endif %}
+                    </span>
+                    <span class="font-medium leading-tight">{{ message }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endwith %}
+
+          {% if pending_approval %}
+            <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1 mt-2">
+              <div class="font-semibold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">hourglass_empty</span>
+                <span>Verification Pending</span>
+              </div>
+              <p>Your faculty credentials are currently awaiting approval from the Administrator. Once approved, you will be able to access the console.</p>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Primary Action Button with Loading State -->
+        <div class="pt-1">
+          <button 
+            id="staffSubmitBtn"
+            class="w-full h-11 bg-[#0071e3] hover:bg-[#0059b5] text-white font-medium text-[15px] rounded-[12px] flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all cursor-pointer" 
+            type="submit"
+          >
+            <span id="staffSpinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            <span id="staffBtnText">Sign in</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Two Clean Footer Links (Both 14px) -->
+      <div class="mt-6 pt-5 border-t border-[#E5E5E7] flex items-center justify-center gap-4 text-[14px]">
+        <a class="text-[#0071e3] hover:underline transition-colors font-medium" href="{{ url_for('student_login_page') }}">
+          Student login
+        </a>
+        <span class="text-[#C1C6D6]">&bull;</span>
+        <a class="text-[#565F67] hover:text-[#1B1B1D] transition-colors font-medium flex items-center gap-1" href="{{ url_for('home') }}">
+          Back to home
+        </a>
+      </div>
+    </div>
+
+    <!-- Institutional Location Footer -->
+    <footer class="mt-6 text-center text-[#8E8E93] text-[13px]">
+      Department of MCA &bull; Savitribai Phule Pune University
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // Add loading state when signing in
+  document.getElementById('staffLoginForm').addEventListener('submit', function(e) {
+    const btn = document.getElementById('staffSubmitBtn');
+    const spinner = document.getElementById('staffSpinner');
+    const text = document.getElementById('staffBtnText');
+    
+    btn.disabled = true;
+    btn.classList.add('opacity-80', 'cursor-not-allowed');
+    spinner.classList.remove('hidden');
+    text.textContent = 'Signing in…';
+  });
+</script>
+{% endblock %}

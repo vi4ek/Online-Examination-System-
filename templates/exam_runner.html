@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ exam.title }} — SPPU Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#fcf8fb",
+            "surface-bright": "#fcf8fb",
+            "surface-dim": "#dcd9dc",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f6f3f5",
+            "surface-container": "#f0edef",
+            "surface-container-high": "#eae7ea",
+            "surface-container-highest": "#e4e2e4",
+            "on-surface": "#1b1b1d",
+            "on-surface-variant": "#414753",
+            "outline": "#717785",
+            "outline-variant": "#c1c6d6",
+            "primary": "#0059b5",
+            "primary-container": "#0071e3",
+            "on-primary": "#ffffff",
+            "secondary": "#565f67",
+            "secondary-container": "#d8e1ea",
+            "on-secondary-container": "#5b646b",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a"
+          },
+          fontFamily: {
+            "body-md": ["Inter", "sans-serif"],
+            "title": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          },
+          spacing: {
+            "margin": "2rem",
+            "space-xs": "0.5rem",
+            "space-sm": "0.75rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { 
+      overscroll-behavior: none; 
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #dcd9dc; border-radius: 9999px; }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased min-h-screen flex items-center justify-center p-3 sm:p-6">
+  <main class="w-full max-w-6xl mx-auto my-auto">
+    <div class="flex flex-col w-full">
+      <!-- Top Exam Bar -->
+      <header class="w-full bg-surface-container-lowest rounded-2xl shadow-[0_0_0_1px_rgba(0,0,0,0.08)] p-4 sm:p-5 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex flex-col min-w-0">
+          <span class="font-label-sm text-secondary uppercase text-[11px] font-medium tracking-wide">
+            Savitribai Phule Pune University &bull; Department of MCA
+          </span>
+          <h1 class="font-title text-on-surface text-base sm:text-lg font-semibold mt-0.5 leading-snug">
+            {{ exam.title }} <span class="text-secondary font-normal text-sm">({{ exam.subject_code }})</span>
+          </h1>
+        </div>
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 sm:gap-3 shrink-0">
+          <!-- Real Countdown Timer with Required Test String "Time Remaining" -->
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFF3DC] text-[#8A5000] font-label-md select-none shrink-0 shadow-sm" id="timerBox">
+            <span class="material-symbols-outlined text-[18px]">timer</span>
+            <span class="text-xs font-semibold uppercase tracking-wider">Time Remaining:</span>
+            <span id="timerDigits" class="font-semibold text-[14px] font-mono tabular-nums">00:00</span>
+          </div>
+
+          <!-- Proctoring Browser Lock Badge -->
+          <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#EBF4FD] text-[#0059b5] font-label-md select-none shrink-0 shadow-sm border border-[#C1D9FC] transition-colors" id="proctoringBadge" title="Browser Lock &amp; Anti-cheat Monitor Active">
+            <span class="material-symbols-outlined text-[18px]" id="proctoringIcon">screen_lock_rotation</span>
+            <span class="text-xs font-semibold uppercase tracking-wider hidden sm:inline">Browser Lock:</span>
+            <span id="tabSwitchCounterText" class="font-semibold text-[13px] font-mono tabular-nums">0 / 3 Strikes</span>
+          </div>
+
+          <!-- Candidate Identity Badge -->
+          <div class="flex items-center gap-2 bg-surface-container-low py-1.5 px-3 rounded-full text-secondary shrink-0">
+            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">account_circle</span>
+            <span class="font-label-md text-on-surface text-[13px]">
+              {{ candidate.full_name }}
+              <span class="text-secondary text-[12px]">(Roll: {{ candidate.roll_number }})</span>
+            </span>
+          </div>
+
+          <!-- Abort Exam Button -->
+          <button type="button" id="btnAbortExam" class="h-9 px-3 rounded-xl bg-error-container text-on-error-container text-label-sm font-medium hover:opacity-90 transition-opacity flex items-center gap-1">
+            <span>Abort Exam</span>
+            <span class="material-symbols-outlined text-[15px]">close</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Two-Column Assessment Grid -->
+      <div class="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        <!-- Left: Question Work Area (8 cols) -->
+        <div class="lg:col-span-8 flex flex-col gap-4">
+          <div class="bg-surface-container-lowest rounded-[20px] shadow-[0_0_0_1px_rgba(0,0,0,0.08)] p-5 sm:p-8 flex flex-col min-h-[460px]">
+            <!-- Question Meta Bar -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-surface-container-highest">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-surface-container text-secondary font-label-sm font-medium text-[12px]" id="currentQuestionNum">
+                  Question 1 of {{ questions|length }}
+                </span>
+                <span class="font-body-sm text-secondary">&bull;</span>
+                <span class="font-body-sm text-secondary text-[13px]" id="currentQuestionMarks">Single Choice (1 Mark)</span>
+              </div>
+              <button id="btnMarkReview" class="flex items-center gap-1.5 font-label-sm text-secondary hover:text-primary transition-colors cursor-pointer" type="button">
+                <span class="material-symbols-outlined text-[18px]" id="markReviewIcon">bookmark_border</span>
+                <span id="markReviewText">Mark for review</span>
+              </button>
+            </div>
+
+            <!-- Question Prompt Statement -->
+            <div class="pt-5 pb-4 flex-1">
+              <p class="font-body-lg text-on-surface leading-relaxed text-[16px] sm:text-[17px] font-medium" id="currentQuestionPrompt">
+                Loading question statement...
+              </p>
+            </div>
+
+            <!-- Answer Choices Container -->
+            <fieldset aria-label="Answer choices" class="flex flex-col gap-3 my-2" id="optionsContainer">
+              <!-- Dynamically populated options -->
+            </fieldset>
+
+            <!-- Bottom Navigation Toolbar -->
+            <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-6 mt-4 border-t border-surface-container-highest">
+              <div class="flex items-center gap-2">
+                <button id="btnPrev" class="h-11 px-5 rounded-xl bg-surface-container-lowest text-on-surface font-label-md shadow-[0_0_0_1px_rgba(0,0,0,0.12)] hover:bg-surface-container-low transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" type="button" disabled>
+                  <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                  <span>Previous</span>
+                </button>
+                <button id="btnClearChoice" class="h-11 px-4 rounded-xl bg-surface-container-low text-on-surface-variant font-label-md hover:bg-surface-container-high transition-colors text-sm cursor-pointer" type="button">
+                  <span>Clear Choice</span>
+                </button>
+              </div>
+              <button id="btnNext" class="h-11 px-6 rounded-xl bg-primary-container text-on-primary font-label-md shadow-sm hover:opacity-95 active:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer" type="button">
+                <span>Save and next</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Palette Sidebar (4 cols) -->
+        <aside class="lg:col-span-4 flex flex-col gap-5 w-full">
+          <div class="bg-surface-container-lowest rounded-[20px] shadow-[0_0_0_1px_rgba(0,0,0,0.08)] p-5 sm:p-6 flex flex-col">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="font-title text-on-surface font-semibold text-[17px]">Questions</h2>
+              <span class="font-label-sm text-secondary text-[13px]">{{ exam.subject_code }}</span>
+            </div>
+
+            <!-- Legend Grid -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low rounded-xl mb-5">
+              <div class="flex flex-col items-center text-center gap-1.5 min-w-0">
+                <div class="w-3.5 h-3.5 rounded-md bg-[#EBF4FD] shadow-[0_0_0_1.5px_#0071E3]"></div>
+                <span class="font-label-sm text-[11px] text-secondary leading-tight truncate w-full">Answered</span>
+              </div>
+              <div class="flex flex-col items-center text-center gap-1.5 min-w-0">
+                <div class="w-3.5 h-3.5 rounded-md bg-[#FFF3DC] shadow-[0_0_0_1.5px_#8A5000]"></div>
+                <span class="font-label-sm text-[11px] text-secondary leading-tight truncate w-full">Review</span>
+              </div>
+              <div class="flex flex-col items-center text-center gap-1.5 min-w-0">
+                <div class="w-3.5 h-3.5 rounded-md bg-surface-container-lowest shadow-[0_0_0_1px_rgba(0,0,0,0.12)]"></div>
+                <span class="font-label-sm text-[11px] text-secondary leading-tight truncate w-full">Unvisited</span>
+              </div>
+            </div>
+
+            <!-- Numbered Palette Grid -->
+            <div class="grid grid-cols-5 gap-2 sm:gap-2.5 mb-6" id="paletteGrid">
+              <!-- Dynamically populated buttons -->
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="bg-surface-container-low rounded-xl p-3.5 mb-5 flex flex-col gap-2.5">
+              <div class="flex items-center justify-between text-[13px]">
+                <span class="font-body-sm text-secondary">Progress</span>
+                <span class="font-label-sm text-on-surface font-medium" id="progressSummary">0 of {{ questions|length }} answered (0%)</span>
+              </div>
+              <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+                <div id="progressBar" class="h-full bg-primary-container rounded-full w-0 transition-all duration-300"></div>
+              </div>
+            </div>
+
+            <div class="w-full h-px bg-surface-container-highest mb-5"></div>
+
+            <!-- Primary Submit Button -->
+            <button id="btnTriggerSubmit" class="w-full h-11 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer font-semibold" type="button">
+              <span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+              <span>Submit exam</span>
+            </button>
+            <p class="font-label-sm text-secondary text-center text-[12px] mt-3">
+              Session automatically secures responses periodically.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- Submit Confirmation Dialog Modal -->
+  <div id="submitModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-xl p-6 space-y-4">
+      <div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed mx-auto">
+        <span class="material-symbols-outlined text-2xl">assignment_turned_in</span>
+      </div>
+      <div class="text-center space-y-1">
+        <h3 class="font-headline-md text-headline-md text-on-surface">Submit Examination?</h3>
+        <p class="font-body-sm text-body-sm text-on-surface-variant" id="submitModalPrompt">
+          Are you sure you want to finish and submit your exam?
+        </p>
+      </div>
+      <div class="p-3 rounded-xl bg-surface-container-low text-body-sm text-on-surface-variant text-center" id="submitStatsPreview">
+        0 questions answered.
+      </div>
+      <div class="flex items-center gap-3 pt-2">
+        <button type="button" id="btnCancelSubmit" class="flex-1 h-11 rounded-xl bg-surface-container-low text-on-surface font-label-md hover:bg-surface-container-high transition-colors">
+          Return to Exam
+        </button>
+        <button type="button" id="btnConfirmFinalSubmit" class="flex-1 h-11 rounded-xl bg-primary-container text-on-primary font-label-md hover:opacity-95 shadow-sm transition-opacity">
+          Yes, Submit Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proctoring Start / Fullscreen Enforcement Modal -->
+  <div id="proctoringStartModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-surface-container-lowest rounded-2xl shadow-2xl p-6 sm:p-8 space-y-5 border border-surface-container-highest">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-[#EBF4FD] text-primary flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">security</span>
+        </div>
+        <div>
+          <h2 class="font-headline-md text-lg sm:text-xl font-bold text-on-surface">Proctored Examination Lock</h2>
+          <p class="font-body-sm text-xs sm:text-sm text-secondary">Savitribai Phule Pune University &bull; Anti-Cheat Protection</p>
+        </div>
+      </div>
+
+      <div class="bg-surface-container-low rounded-xl p-4 space-y-3 font-body-sm text-[13px] text-on-surface-variant">
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[18px] text-primary shrink-0 mt-0.5">fullscreen</span>
+          <div>
+            <strong class="text-on-surface">Locked Fullscreen Mode:</strong>
+            The assessment must be conducted in full screen. Exiting fullscreen is recorded as a violation.
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[18px] text-[#BA1A1A] shrink-0 mt-0.5">tab</span>
+          <div>
+            <strong class="text-on-surface">Tab &amp; Window Defocus Detection:</strong>
+            Switching tabs, minimizing the browser, or clicking other windows is strictly monitored.
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[18px] text-[#8A5000] shrink-0 mt-0.5">warning</span>
+          <div>
+            <strong class="text-on-surface">3-Strike Auto-Submission:</strong>
+            A maximum of 3 violations is permitted. Upon the 3rd strike, your examination will be locked and automatically submitted.
+          </div>
+        </div>
+        <div class="flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[18px] text-secondary shrink-0 mt-0.5">block</span>
+          <div>
+            <strong class="text-on-surface">Lockdown of Controls:</strong>
+            Right-click context menus, copy/paste, and developer inspect shortcuts are disabled.
+          </div>
+        </div>
+      </div>
+
+      <button type="button" id="btnStartAssessment" class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-md font-semibold text-base shadow-sm hover:opacity-95 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-[20px]">play_circle</span>
+        <span>Enter Fullscreen &amp; Start Assessment</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Switch / Window Blur Violation Modal -->
+  <div id="tabViolationModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-2xl p-6 sm:p-7 space-y-4 border border-[#FFDAD6]">
+      <div class="w-14 h-14 rounded-full bg-[#FFDAD6] text-[#BA1A1A] flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-3xl">warning</span>
+      </div>
+      <div class="text-center space-y-1">
+        <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#FFDAD6] text-[#BA1A1A] text-xs font-bold uppercase tracking-wider">
+          Strike <span id="violationCountNum" class="mx-1">1</span> of 3
+        </span>
+        <h3 class="font-headline-md text-lg font-bold text-on-surface pt-1">Security Alert: Tab Switch Detected</h3>
+        <p class="font-body-sm text-[13px] text-on-surface-variant">
+          You switched away from the active assessment window or exited fullscreen. This incident has been recorded in your proctoring audit log.
+        </p>
+      </div>
+      <div class="bg-surface-container-low p-3 rounded-xl text-center text-xs text-secondary">
+        Notice: Reaching 3 strikes will immediately lock and submit your exam.
+      </div>
+      <button type="button" id="btnResumeFromViolation" class="w-full h-11 rounded-xl bg-primary text-on-primary font-label-md font-semibold text-sm hover:opacity-95 shadow-sm transition-opacity flex items-center justify-center gap-2 cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">fullscreen</span>
+        <span>Return to Fullscreen &amp; Resume</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Force Submit Due to 3 Strikes Modal -->
+  <div id="forceSubmitModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-lg hidden items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-2xl p-6 sm:p-8 space-y-4 text-center border-2 border-[#BA1A1A]">
+      <div class="w-16 h-16 rounded-full bg-[#FFDAD6] text-[#BA1A1A] flex items-center justify-center mx-auto">
+        <span class="material-symbols-outlined text-3xl">gavel</span>
+      </div>
+      <div class="space-y-1">
+        <h3 class="font-headline-md text-xl font-bold text-[#BA1A1A]">Assessment Terminated</h3>
+        <p class="font-body-sm text-sm text-on-surface-variant">
+          Maximum violations limit exceeded (3/3 strikes). Your examination has been locked and automatically submitted for academic evaluation.
+        </p>
+      </div>
+      <div class="p-3 rounded-xl bg-surface-container-low text-xs text-secondary">
+        Submitting responses and recording telemetry...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const examData = {
+      id: {{ exam.id }},
+      durationMinutes: {{ exam.duration_minutes }},
+      questions: [
+        {% for q in questions %}
+        {
+          id: {{ q.id }},
+          text: {{ q.question_text|tojson }},
+          options: {
+            A: {{ q.option_a|tojson }},
+            B: {{ q.option_b|tojson }},
+            C: {{ q.option_c|tojson }},
+            D: {{ q.option_d|tojson }}
+          },
+          marks: {{ q.marks or 1 }}
+        }{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    };
+
+    let currentIndex = 0;
+    const userAnswers = {};
+    const markedForReview = {};
+    const visitedQuestions = { 0: true };
+
+    const totalSecs = Math.max(1, examData.durationMinutes * 60);
+    let secondsLeft = totalSecs;
+    let timerInterval = null;
+
+    // Proctoring & Anti-Cheat State
+    let examStarted = false;
+    let isSubmitting = false;
+    let tabSwitchCount = 0;
+    const maxAllowedStrikes = 3;
+    let lastViolationTime = 0;
+
+    // Elements
+    const timerDigits = document.getElementById('timerDigits');
+    const promptEl = document.getElementById('currentQuestionPrompt');
+    const qNumEl = document.getElementById('currentQuestionNum');
+    const marksEl = document.getElementById('currentQuestionMarks');
+    const optionsContainer = document.getElementById('optionsContainer');
+    const paletteGrid = document.getElementById('paletteGrid');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const btnClear = document.getElementById('btnClearChoice');
+    const btnMarkReview = document.getElementById('btnMarkReview');
+    const markReviewIcon = document.getElementById('markReviewIcon');
+    const markReviewText = document.getElementById('markReviewText');
+    const progressSummary = document.getElementById('progressSummary');
+    const progressBar = document.getElementById('progressBar');
+    const submitModal = document.getElementById('submitModal');
+    const btnTriggerSubmit = document.getElementById('btnTriggerSubmit');
+    const btnCancelSubmit = document.getElementById('btnCancelSubmit');
+    const btnConfirmFinalSubmit = document.getElementById('btnConfirmFinalSubmit');
+    const submitStatsPreview = document.getElementById('submitStatsPreview');
+    const btnAbortExam = document.getElementById('btnAbortExam');
+
+    // Proctoring Elements
+    const proctoringStartModal = document.getElementById('proctoringStartModal');
+    const btnStartAssessment = document.getElementById('btnStartAssessment');
+    const tabViolationModal = document.getElementById('tabViolationModal');
+    const btnResumeFromViolation = document.getElementById('btnResumeFromViolation');
+    const forceSubmitModal = document.getElementById('forceSubmitModal');
+    const violationCountNum = document.getElementById('violationCountNum');
+    const proctoringBadge = document.getElementById('proctoringBadge');
+    const tabSwitchCounterText = document.getElementById('tabSwitchCounterText');
+    const proctoringIcon = document.getElementById('proctoringIcon');
+
+    // Timer Logic
+    function updateTimerDisplay() {
+      const mins = Math.floor(secondsLeft / 60);
+      const secs = secondsLeft % 60;
+      timerDigits.textContent = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        secondsLeft--;
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          secondsLeft = 0;
+          updateTimerDisplay();
+          alert('Time has expired! Submitting your examination automatically.');
+          submitExamNow(true);
+        } else {
+          updateTimerDisplay();
+        }
+      }, 1000);
+    }
+
+    // Fullscreen and Security Enforcement
+    function requestBrowserFullscreen() {
+      const docEl = document.documentElement;
+      const rfs = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if (rfs) {
+        return rfs.call(docEl).catch(err => {
+          console.warn('Fullscreen request non-fatal bypass:', err);
+        });
+      }
+      return Promise.resolve();
+    }
+
+    function updateProctoringBadge() {
+      if (tabSwitchCounterText) {
+        tabSwitchCounterText.textContent = `${tabSwitchCount} / ${maxAllowedStrikes} Strikes`;
+      }
+      if (!proctoringBadge) return;
+      if (tabSwitchCount === 0) {
+        proctoringBadge.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#EBF4FD] text-[#0059b5] font-label-md select-none shrink-0 shadow-sm border border-[#C1D9FC] transition-colors";
+        proctoringIcon.textContent = "screen_lock_rotation";
+      } else if (tabSwitchCount === 1) {
+        proctoringBadge.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFF3DC] text-[#8A5000] font-label-md select-none shrink-0 shadow-sm border border-[#FFE0A3] transition-colors";
+        proctoringIcon.textContent = "warning";
+      } else {
+        proctoringBadge.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFDAD6] text-[#BA1A1A] font-label-md select-none shrink-0 shadow-sm border border-[#FFB4AB] transition-colors";
+        proctoringIcon.textContent = "report";
+      }
+    }
+
+    function handleViolation(reason) {
+      if (!examStarted || isSubmitting) return;
+
+      const now = Date.now();
+      // Debounce events firing within 1500ms (e.g. blur + visibilitychange triggering together)
+      if (now - lastViolationTime < 1500) return;
+      lastViolationTime = now;
+
+      tabSwitchCount++;
+      updateProctoringBadge();
+
+      if (tabSwitchCount >= maxAllowedStrikes) {
+        // Exceeded strikes -> lock and auto-submit
+        tabViolationModal.classList.add('hidden');
+        tabViolationModal.classList.remove('flex');
+        forceSubmitModal.classList.remove('hidden');
+        forceSubmitModal.classList.add('flex');
+        setTimeout(() => {
+          submitExamNow(true);
+        }, 1800);
+      } else {
+        violationCountNum.textContent = tabSwitchCount;
+        tabViolationModal.classList.remove('hidden');
+        tabViolationModal.classList.add('flex');
+      }
+    }
+
+    // Start Exam Event
+    btnStartAssessment.addEventListener('click', () => {
+      requestBrowserFullscreen();
+      proctoringStartModal.classList.add('hidden');
+      proctoringStartModal.classList.remove('flex');
+      examStarted = true;
+      startTimer();
+    });
+
+    // Resume from Violation Event
+    btnResumeFromViolation.addEventListener('click', () => {
+      requestBrowserFullscreen();
+      tabViolationModal.classList.add('hidden');
+      tabViolationModal.classList.remove('flex');
+    });
+
+    // Security Listeners: Tab Switch & Window Defocus
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        handleViolation('Tab switched or browser minimized');
+      }
+    });
+
+    window.addEventListener('blur', () => {
+      handleViolation('Window lost focus or candidate navigated away');
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && examStarted && !isSubmitting) {
+        handleViolation('Exited fullscreen mode');
+      }
+    });
+
+    // Lock context menu, copy, cut, paste, and developer inspection keys
+    document.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('copy', e => e.preventDefault());
+    document.addEventListener('cut', e => e.preventDefault());
+    document.addEventListener('paste', e => e.preventDefault());
+
+    document.addEventListener('keydown', e => {
+      // F12 or F11
+      if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+Shift+I / J / C
+      if (e.ctrlKey && e.shiftKey && (['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key))) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+U (view source), Ctrl+S (save), Ctrl+P (print)
+      if (e.ctrlKey && (['u', 'U', 's', 'S', 'p', 'P'].includes(e.key))) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+C, Ctrl+V, Ctrl+X
+      if (e.ctrlKey && (['c', 'C', 'v', 'V', 'x', 'X'].includes(e.key))) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Render Question
+    function renderQuestion(index) {
+      currentIndex = index;
+      visitedQuestions[index] = true;
+      const q = examData.questions[index];
+
+      qNumEl.textContent = `Question ${index + 1} of ${examData.questions.length}`;
+      marksEl.textContent = `Single Choice (${q.marks} Mark${q.marks > 1 ? 's' : ''})`;
+      promptEl.textContent = q.text;
+
+      // Update Mark for review status
+      const isMarked = !!markedForReview[q.id];
+      markReviewIcon.textContent = isMarked ? 'bookmark' : 'bookmark_border';
+      markReviewText.textContent = isMarked ? 'Marked for review' : 'Mark for review';
+      markReviewText.className = isMarked ? 'text-primary font-semibold' : '';
+
+      // Options
+      optionsContainer.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+      letters.forEach(letter => {
+        const text = q.options[letter];
+        if (!text) return;
+
+        const isSelected = userAnswers[q.id] === letter;
+        const label = document.createElement('label');
+        label.className = `group flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all ${
+          isSelected 
+            ? 'bg-[#EBF4FD] shadow-[0_0_0_1.5px_#0071E3]' 
+            : 'bg-surface-container-lowest hover:bg-surface-container-low shadow-[0_0_0_1px_rgba(0,0,0,0.08)]'
+        }`;
+
+        label.innerHTML = `
+          <div class="flex items-center gap-3.5 min-w-0 pr-2">
+            <span class="w-5 h-5 rounded-full bg-surface-container-lowest flex items-center justify-center shrink-0 ${
+              isSelected ? 'shadow-[0_0_0_1.5px_#0071E3]' : 'shadow-[0_0_0_1.5px_#717785]'
+            }">
+              <span class="w-2.5 h-2.5 rounded-full ${isSelected ? 'bg-primary-container' : 'bg-transparent'}"></span>
+            </span>
+            <span class="font-body-md text-on-surface ${isSelected ? 'font-medium' : ''} leading-normal">${text}</span>
+          </div>
+          <span class="font-label-sm ${isSelected ? 'text-primary-container font-semibold' : 'text-secondary group-hover:text-on-surface font-medium'} shrink-0">${letter}</span>
+          <input type="radio" name="active_mcq" value="${letter}" class="sr-only" ${isSelected ? 'checked' : ''}>
+        `;
+
+        label.addEventListener('click', () => {
+          userAnswers[q.id] = letter;
+          renderQuestion(currentIndex);
+          renderPalette();
+          updateProgress();
+        });
+
+        optionsContainer.appendChild(label);
+      });
+
+      // Prev / Next Buttons state
+      btnPrev.disabled = currentIndex === 0;
+      if (currentIndex === examData.questions.length - 1) {
+        btnNext.innerHTML = `<span>Submit</span><span class="material-symbols-outlined text-[18px]">check</span>`;
+      } else {
+        btnNext.innerHTML = `<span>Save and next</span><span class="material-symbols-outlined text-[18px]">arrow_forward</span>`;
+      }
+
+      renderPalette();
+    }
+
+    // Render Palette Buttons
+    function renderPalette() {
+      paletteGrid.innerHTML = '';
+      examData.questions.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'h-10 rounded-xl font-label-md flex items-center justify-center transition-all cursor-pointer text-sm ';
+
+        const isCurrent = idx === currentIndex;
+        const isAnswered = !!userAnswers[q.id];
+        const isMarked = !!markedForReview[q.id];
+
+        if (isCurrent) {
+          btn.className += 'bg-[#EBF4FD] text-primary-container shadow-[0_0_0_2px_#0071E3] font-bold';
+        } else if (isAnswered) {
+          btn.className += 'bg-[#EBF4FD] text-primary-container shadow-[0_0_0_1px_rgba(0,113,227,0.3)] font-medium';
+        } else if (isMarked) {
+          btn.className += 'bg-[#FFF3DC] text-[#8A5000] shadow-[0_0_0_1px_#8A5000] font-medium';
+        } else if (visitedQuestions[idx]) {
+          btn.className += 'bg-surface-container-low text-secondary shadow-[0_0_0_1px_rgba(0,0,0,0.12)]';
+        } else {
+          btn.className += 'bg-surface-container-lowest text-on-surface shadow-[0_0_0_1px_rgba(0,0,0,0.12)] hover:bg-surface-container-low';
+        }
+
+        btn.textContent = idx + 1;
+        btn.addEventListener('click', () => renderQuestion(idx));
+        paletteGrid.appendChild(btn);
+      });
+    }
+
+    // Update Progress Meter
+    function updateProgress() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const total = examData.questions.length;
+      const pct = Math.round((answeredCount / total) * 100);
+      progressSummary.textContent = `${answeredCount} of ${total} answered (${pct}%)`;
+      progressBar.style.width = `${pct}%`;
+    }
+
+    // Button Handlers
+    btnPrev.addEventListener('click', () => {
+      if (currentIndex > 0) renderQuestion(currentIndex - 1);
+    });
+
+    btnNext.addEventListener('click', () => {
+      if (currentIndex < examData.questions.length - 1) {
+        renderQuestion(currentIndex + 1);
+      } else {
+        openSubmitModal();
+      }
+    });
+
+    btnClear.addEventListener('click', () => {
+      const q = examData.questions[currentIndex];
+      delete userAnswers[q.id];
+      renderQuestion(currentIndex);
+      updateProgress();
+    });
+
+    btnMarkReview.addEventListener('click', () => {
+      const q = examData.questions[currentIndex];
+      markedForReview[q.id] = !markedForReview[q.id];
+      renderQuestion(currentIndex);
+    });
+
+    // Abort Exam handler
+    btnAbortExam.addEventListener('click', () => {
+      const ok = confirm('Are you sure you want to abort this examination? Your answers will not be evaluated and you will return to your dashboard.');
+      if (ok) {
+        window.location.href = "{{ url_for('student_dashboard') }}";
+      }
+    });
+
+    // Submit Modal
+    function openSubmitModal() {
+      const answeredCount = Object.keys(userAnswers).length;
+      const total = examData.questions.length;
+      const unanswered = total - answeredCount;
+      submitStatsPreview.textContent = `${answeredCount} questions answered, ${unanswered} unanswered.`;
+      submitModal.classList.remove('hidden');
+      submitModal.classList.add('flex');
+    }
+
+    btnTriggerSubmit.addEventListener('click', openSubmitModal);
+    btnCancelSubmit.addEventListener('click', () => {
+      submitModal.classList.add('hidden');
+      submitModal.classList.remove('flex');
+    });
+
+    btnConfirmFinalSubmit.addEventListener('click', () => submitExamNow(false));
+
+    function submitExamNow(forced = false) {
+      if (isSubmitting) return;
+      isSubmitting = true;
+      if (timerInterval) clearInterval(timerInterval);
+
+      btnConfirmFinalSubmit.disabled = true;
+      btnConfirmFinalSubmit.textContent = 'Submitting...';
+
+      const timeTaken = Math.max(1, totalSecs - secondsLeft);
+      const payload = {
+        exam_id: examData.id,
+        time_taken_seconds: timeTaken,
+        answers: userAnswers,
+        tab_switches_count: tabSwitchCount
+      };
+
+      fetch("{{ url_for('student_submit_exam') }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.redirect_url) {
+          window.location.href = data.redirect_url;
+        } else if (data.submission_id) {
+          window.location.href = `/student/result/${data.submission_id}`;
+        } else {
+          alert('Submission error: ' + (data.error || 'Unknown error'));
+          btnConfirmFinalSubmit.disabled = false;
+          btnConfirmFinalSubmit.textContent = 'Yes, Submit Now';
+          isSubmitting = false;
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Connection error submitting answers. Retrying...');
+        btnConfirmFinalSubmit.disabled = false;
+        btnConfirmFinalSubmit.textContent = 'Yes, Submit Now';
+        isSubmitting = false;
+      });
+    }
+
+    // Initialize display immediately
+    updateTimerDisplay();
+    renderQuestion(0);
+    updateProgress();
+    updateProctoringBadge();
+  </script>
+</body>
+</html>

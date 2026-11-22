@@ -1,0 +1,90 @@
+{% extends "student/base_student.html" %}
+
+{% block title %}My Assessment Scorecards Archive — ExamPro SPPU{% endblock %}
+
+{% block content %}
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-6 sm:p-8 border border-surface-container-highest/60 space-y-space-md">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm border-b border-surface-container-highest/60">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Completed Examination Scorecards</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Archived academic test evaluations and authenticated scorecards</p>
+    </div>
+    <div class="flex items-center gap-space-sm self-start sm:self-auto">
+      <span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium">
+        {{ submissions|length }} Evaluated Submissions
+      </span>
+      <button type="button" onclick="window.print()" class="h-9 px-3.5 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container-highest flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px] text-secondary">print</span>
+        <span>Print</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="text-on-surface-variant font-label-md text-label-md bg-surface-container-low/60 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Sub #</th>
+          <th class="py-3 px-4 font-medium">Examination Title</th>
+          <th class="py-3 px-4 font-medium">Subject</th>
+          <th class="py-3 px-4 font-medium">Score Obtained</th>
+          <th class="py-3 px-4 font-medium">Percentage</th>
+          <th class="py-3 px-4 font-medium">Result Status</th>
+          <th class="py-3 px-4 font-medium">Time Taken</th>
+          <th class="py-3 px-4 font-medium">Timestamp</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/30">
+        {% for s in submissions %}
+          <tr class="hover:bg-surface-container-low/40 transition-colors">
+            <td class="py-4 px-4 font-body-sm text-body-sm text-secondary font-mono">#{{ s.id }}</td>
+            <td class="py-4 px-4 font-body-md text-body-md text-on-surface font-medium">{{ s.exam_title }}</td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">
+              <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-secondary font-label-sm text-label-sm font-medium">
+                {{ s.subject_code }}
+              </span>
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface font-semibold">
+              {{ s.score }} / {{ s.total_marks }}
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface font-semibold">{{ s.percentage }}%</td>
+            <td class="py-4 px-4 font-body-sm text-body-sm">
+              {% if s.status == 'Passed' %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31] font-semibold">
+                  PASSED
+                </span>
+              {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FFDAD6] text-[#BA1A1A] font-semibold">
+                  FAILED
+                </span>
+              {% endif %}
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-secondary font-mono">
+              {{ (s.time_taken_seconds // 60) }}m {{ (s.time_taken_seconds % 60) }}s
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-secondary text-xs">{{ s.submitted_at }}</td>
+            <td class="py-4 px-4 text-right">
+              <div class="inline-flex items-center gap-1.5">
+                <a href="{{ url_for('download_result_csv', submission_id=s.id) }}" class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface text-label-sm font-medium transition-colors flex items-center gap-1 border border-surface-container-highest" title="Download CSV Scorecard" download>
+                  <span class="material-symbols-outlined text-[15px]">download</span>
+                  <span>CSV</span>
+                </a>
+                <a href="{{ url_for('student_view_result', submission_id=s.id) }}" class="h-8 px-3 rounded-lg bg-primary-container text-on-primary text-label-sm font-medium hover:opacity-95 transition-opacity flex items-center gap-1">
+                  <span>Review</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="9" class="py-8 text-center text-on-surface-variant font-body-sm">
+              No examination records found. Go to <a href="{{ url_for('student_exams_page') }}" class="text-primary font-semibold hover:underline">Available Exams</a> to commence a test.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

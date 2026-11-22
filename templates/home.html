@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}Master of Computer Applications — Savitribai Phule Pune University{% endblock %}
+
+{% block layout %}
+<!-- Fixed Header: 1120px max container aligned with main content -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/[0.08] shadow-[0_1px_4px_rgba(0,0,0,0.02)]">
+  <div class="h-16 max-w-[1120px] mx-auto px-6 flex items-center justify-between gap-4">
+    <a href="{{ url_for('home') }}" class="flex items-center gap-3 shrink-0">
+      <div class="w-8 h-8 rounded-lg bg-[#0071e3] text-white flex items-center justify-center font-bold text-sm shadow-sm">SP</div>
+      <span class="font-semibold text-[17px] text-[#1B1B1D] tracking-tight">ExamPro SPPU MCA</span>
+    </a>
+    
+    <!-- Navigation Links: Neutral hover, no default blue highlight on About -->
+    <nav class="hidden md:flex items-center gap-6">
+      <a class="text-[15px] text-[#565F67] hover:text-[#1B1B1D] transition-colors" href="#about">About</a>
+      <a class="text-[15px] text-[#565F67] hover:text-[#1B1B1D] transition-colors" href="#admissions">Admissions</a>
+      <a class="text-[15px] text-[#565F67] hover:text-[#1B1B1D] transition-colors" href="#academics">Academics</a>
+      <a class="text-[15px] text-[#565F67] hover:text-[#1B1B1D] transition-colors" href="#notices">Notices</a>
+      <a class="text-[15px] text-[#565F67] hover:text-[#1B1B1D] transition-colors" href="#contact">Contact</a>
+    </nav>
+
+    <!-- Single 44px Login Button (No redundant profile icon) -->
+    <div class="flex items-center">
+      <a class="inline-flex items-center justify-center h-[44px] px-5 rounded-xl bg-[#0071e3] text-white text-[14px] font-medium transition-colors hover:bg-[#0059b5] shadow-xs" href="{{ url_for('student_login_page') }}">
+        Login
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- Main Page Body: Neutral #F5F5F7 background -->
+<main class="w-full pt-16 bg-[#F5F5F7] min-h-[calc(100vh-160px)]">
+  <div class="w-full max-w-[1120px] mx-auto px-6 py-8 sm:py-10 flex flex-col gap-8 sm:gap-10">
+
+    <!-- Hero Section: Top-aligned, shorter image (aspect 16:10), no large empty gap -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start" id="about">
+      <div class="lg:col-span-7 flex flex-col gap-3.5 pr-0 lg:pr-4">
+        <!-- Badge: No brackets, no DTE code, modern Admissions 2026-27 pill -->
+        <div class="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full bg-white border border-black/[0.08] text-[#565F67] text-[13px] font-medium shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-[#0071e3]"></span>
+          <span>Admissions 2026-27</span>
+        </div>
+
+        <h1 class="text-[32px] sm:text-[36px] font-semibold text-[#1B1B1D] tracking-tight leading-tight">
+          Master of Computer Applications
+        </h1>
+
+        <!-- Factual Sentence Replacing Marketing Claim -->
+        <p class="text-[16px] text-[#565F67] max-w-xl leading-relaxed">
+          A two-year postgraduate program at Savitribai Phule Pune University.
+        </p>
+
+        <!-- Two Dedicated Action Buttons: Apply now (blue) & Student login (white) -->
+        <div class="flex items-center gap-3 pt-2">
+          <a class="inline-flex items-center justify-center h-[44px] px-6 rounded-xl bg-[#0071e3] text-white text-[14px] font-medium transition-colors shadow-sm hover:bg-[#0059b5]" href="#admissions">
+            Apply now
+          </a>
+          <a class="inline-flex items-center justify-center h-[44px] px-6 rounded-xl bg-white text-[#1B1B1D] text-[14px] font-medium shadow-xs border border-black/[0.08] hover:bg-[#F0EDEF] transition-colors" href="{{ url_for('student_login_page') }}">
+            Student login
+          </a>
+        </div>
+      </div>
+
+      <!-- Shorter Top-Aligned Campus Photo (aspect-16/10) with Accurate Caption -->
+      <div class="lg:col-span-5 flex flex-col gap-1.5">
+        <div class="relative w-full aspect-[16/10] sm:aspect-[4/3] max-h-[300px] rounded-[18px] bg-white overflow-hidden shadow-xs border border-black/[0.08]">
+          <img src="{{ url_for('static', filename='images/sppu_campus.jpg') }}" alt="Savitribai Phule Pune University Main Administration Building" class="w-full h-full object-cover hover:scale-102 transition-transform duration-500"/>
+        </div>
+        <span class="text-[12px] text-[#565F67] px-1">
+          Main Administration Building &bull; Savitribai Phule Pune University
+        </span>
+      </div>
+    </section>
+
+    <!-- Quick Links Row (6 cards): 1px border border-black/[0.08], 17px semibold title, 14px muted subtitle -->
+    <section>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+        <!-- Card 1: Admissions -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="#admissions">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">how_to_reg</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Admissions</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Intake &amp; eligibility</span>
+        </a>
+
+        <!-- Card 2: Syllabus -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="#academics">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">menu_book</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Syllabus</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Curriculum &amp; credits</span>
+        </a>
+
+        <!-- Card 3: Exam timetable -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="#notices">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">calendar_month</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Timetable</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Schedules &amp; venues</span>
+        </a>
+
+        <!-- Card 4: Results -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="{{ url_for('student_login_page') }}">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">fact_check</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Results</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Grade ledger</span>
+        </a>
+
+        <!-- Card 5: Examination Portal -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="{{ url_for('student_login_page') }}">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">laptop_mac</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Exam Portal</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Candidate tests</span>
+        </a>
+
+        <!-- Card 6: Notices -->
+        <a class="flex flex-col p-4 rounded-[16px] bg-white border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-black/[0.16] hover:shadow-md transition-all group" href="#notices">
+          <div class="w-10 h-10 rounded-xl bg-[#F5F5F7] flex items-center justify-center mb-3 group-hover:bg-[#E5E5E7] transition-colors">
+            <span class="material-symbols-outlined text-[#565F67] text-[20px]">campaign</span>
+          </div>
+          <span class="text-[17px] font-semibold text-[#1B1B1D] leading-snug">Notices</span>
+          <span class="text-[14px] text-[#565F67] mt-0.5 leading-tight">Official updates</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Two-column Section: Notices & Portal Access Desk -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start" id="notices">
+      <!-- Left Column: Notices -->
+      <div class="lg:col-span-8 flex flex-col p-6 rounded-[20px] bg-white border border-black/[0.08] shadow-xs gap-4">
+        <div class="flex items-center justify-between pb-1 border-b border-black/[0.06]">
+          <div>
+            <h2 class="text-[20px] font-semibold text-[#1B1B1D] tracking-tight">Notices &amp; Circulars</h2>
+            <p class="text-[14px] text-[#565F67]">Official university circulars and examination notifications</p>
+          </div>
+          <a class="text-[14px] font-medium text-[#0071e3] hover:underline inline-flex items-center gap-1" href="#">
+            Archive <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </a>
+        </div>
+        
+        <div class="flex flex-col gap-3">
+          <article class="p-4 rounded-xl bg-[#F5F5F7] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#EAEAEA] transition-colors">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-[#565F67] mt-0.5 text-[20px]">description</span>
+              <div class="flex flex-col">
+                <span class="text-[15px] text-[#1B1B1D] font-medium">MCA Semester Regular &amp; Backlog Schedule</span>
+                <span class="text-[13px] text-[#565F67]">Department Examination Committee &bull; Official Circular</span>
+              </div>
+            </div>
+            <span class="self-start sm:self-center px-2.5 py-0.5 rounded-full bg-white text-[#565F67] text-[12px] font-medium border border-black/[0.08] whitespace-nowrap">
+              Examination
+            </span>
+          </article>
+
+          <article class="p-4 rounded-xl bg-[#F5F5F7] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#EAEAEA] transition-colors">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-[#565F67] mt-0.5 text-[20px]">description</span>
+              <div class="flex flex-col">
+                <span class="text-[15px] text-[#1B1B1D] font-medium">Revaluation and verification of marks form submission deadline</span>
+                <span class="text-[13px] text-[#565F67]">Academic Section &bull; Circular Notice</span>
+              </div>
+            </div>
+            <span class="self-start sm:self-center px-2.5 py-0.5 rounded-full bg-[#FFDAD6] text-[#93000A] text-[12px] font-medium whitespace-nowrap">
+              Urgent
+            </span>
+          </article>
+
+          <article class="p-4 rounded-xl bg-[#F5F5F7] flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-[#EAEAEA] transition-colors">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-[#565F67] mt-0.5 text-[20px]">description</span>
+              <div class="flex flex-col">
+                <span class="text-[15px] text-[#1B1B1D] font-medium">Hall ticket download for Semester regular examinations</span>
+                <span class="text-[13px] text-[#565F67]">Student Affairs &bull; Published Circular</span>
+              </div>
+            </div>
+            <span class="self-start sm:self-center px-2.5 py-0.5 rounded-full bg-white text-[#565F67] text-[12px] font-medium border border-black/[0.08] whitespace-nowrap">
+              Admit Card
+            </span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Right Column: Portal Access Desk (Includes tests b"Faculty & Administration" and b"Student Examination Portal") -->
+      <div class="lg:col-span-4 flex flex-col p-6 rounded-[20px] bg-white border border-black/[0.08] shadow-xs gap-4" id="login">
+        <div class="flex flex-col gap-1 pb-1 border-b border-black/[0.06]">
+          <h2 class="text-[20px] font-semibold text-[#1B1B1D] tracking-tight">Portal Gateway</h2>
+          <p class="text-[14px] text-[#565F67]">
+            Sign in to candidate workspace or administration console
+          </p>
+        </div>
+        
+        <div class="flex flex-col gap-3 pt-1">
+          <a class="flex items-center justify-between w-full h-[46px] px-4 rounded-xl bg-[#F5F5F7] text-[#1B1B1D] text-[14px] font-medium border border-black/[0.06] hover:bg-[#EAEAEA] transition-colors" href="{{ url_for('student_login_page') }}">
+            <span class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[#0071e3] text-[20px]">school</span>
+              <span>Student Examination Portal</span>
+            </span>
+            <span class="material-symbols-outlined text-[#8E8E93] text-[18px]">chevron_right</span>
+          </a>
+
+          <a class="flex items-center justify-between w-full h-[46px] px-4 rounded-xl bg-[#F5F5F7] text-[#1B1B1D] text-[14px] font-medium border border-black/[0.06] hover:bg-[#EAEAEA] transition-colors" href="{{ url_for('admin_login_page') }}">
+            <span class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-[#565F67] text-[20px]">admin_panel_settings</span>
+              <span>Faculty &amp; Administration</span>
+            </span>
+            <span class="material-symbols-outlined text-[#8E8E93] text-[18px]">chevron_right</span>
+          </a>
+        </div>
+
+        <div class="pt-2 text-[13px] text-[#8E8E93] flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">verified_user</span>
+          <span>Requires university PRN or Faculty ID</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Curriculum (Six Subject Cards) -->
+    <section class="flex flex-col gap-4" id="academics">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-[20px] font-semibold text-[#1B1B1D] tracking-tight">Core Curriculum</h2>
+          <p class="text-[14px] text-[#565F67]">Prescribed academic curriculum modules for SPPU MCA post-graduate qualification</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-301</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Data Structures &amp; Algorithms</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Complexity analysis, advanced trees, graphs, network flow algorithms, and dynamic programming formulations.</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-302</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Advanced Database Management</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Distributed databases, query optimization engines, indexing architectures, and ACID transaction models.</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-303</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Cloud Computing &amp; DevOps</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Virtualization primitives, container orchestration with Kubernetes, and automated deployment pipelines.</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-304</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Full Stack Web Technologies</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Modern asynchronous runtimes, component lifecycles, RESTful and GraphQL APIs, and state persistence.</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-305</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Machine Learning &amp; AI</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Supervised learning, gradient descent formulations, deep neural network layers, and practical predictive models.</p>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-[18px] bg-white border border-black/[0.08] shadow-xs flex flex-col justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[12px] font-mono font-medium text-[#565F67]">MCA-306</span>
+              <span class="px-2 py-0.5 rounded-full bg-[#F5F5F7] text-[11px] font-medium text-[#565F67]">4 Credits</span>
+            </div>
+            <h3 class="text-[17px] font-semibold text-[#1B1B1D]">Software Project Management</h3>
+            <p class="text-[14px] text-[#565F67] leading-relaxed">Agile frameworks, effort estimation models, verification pipelines, code audits, and institutional compliance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Institutional Metrics Strip -->
+    <section>
+      <div class="p-6 rounded-[20px] bg-white border border-black/[0.08] shadow-xs grid grid-cols-2 md:grid-cols-4 gap-6 divide-y md:divide-y-0 md:divide-x divide-black/[0.06]">
+        <div class="flex flex-col items-center md:items-start text-center md:text-left pt-2 md:pt-0">
+          <span class="text-[28px] font-bold text-[#1B1B1D] tracking-tight">120</span>
+          <span class="text-[14px] text-[#565F67]">Enrolled candidates</span>
+        </div>
+        <div class="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-0 md:pl-6">
+          <span class="text-[28px] font-bold text-[#1B1B1D] tracking-tight">98.4%</span>
+          <span class="text-[14px] text-[#565F67]">Placement record</span>
+        </div>
+        <div class="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-0 md:pl-6">
+          <span class="text-[28px] font-bold text-[#1B1B1D] tracking-tight">24</span>
+          <span class="text-[14px] text-[#565F67]">Research publications</span>
+        </div>
+        <div class="flex flex-col items-center md:items-start text-center md:text-left pt-4 md:pt-0 md:pl-6">
+          <span class="text-[28px] font-bold text-[#1B1B1D] tracking-tight">100%</span>
+          <span class="text-[14px] text-[#565F67]">SPPU accredited</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Footer: Aligned to 1120px with Faculty Login and DTE Code -->
+<footer class="w-full bg-white border-t border-black/[0.08] py-8" id="contact">
+  <div class="max-w-[1120px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-[#565F67] text-[14px]">
+    <div>
+      <p>&copy; 2026 Savitribai Phule Pune University &bull; Department of MCA</p>
+      <p class="text-[12px] text-[#8E8E93] mt-0.5">DTE Choice Code: 5607 &bull; Ganeshkhind, Pune 411007</p>
+    </div>
+    <div class="flex items-center gap-5 text-[14px]">
+      <a class="hover:text-[#1B1B1D] transition-colors" href="{{ url_for('admin_login_page') }}">Faculty &amp; Administration</a>
+      <a class="hover:text-[#1B1B1D] transition-colors" href="{{ url_for('student_login_page') }}">Student Login</a>
+      <a class="hover:text-[#1B1B1D] transition-colors" href="#">Support Desk</a>
+    </div>
+  </div>
+</footer>
+{% endblock %}

@@ -1,0 +1,798 @@
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Faculty Administration Console — Overview Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <div class="flex items-center gap-2">
+      <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Overview Dashboard</h1>
+      <span class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-primary-fixed text-on-primary-fixed">
+        Super-Admin Console
+      </span>
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+      Department of MCA &bull; Savitribai Phule Pune University &bull; Faculty Approvals, Student Directory CRUD,
+      Support Tickets &amp; Governance
+    </p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <button onclick="document.getElementById('addStudentModal').classList.remove('hidden')"
+      class="h-11 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container-highest cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">person_add</span>
+      <span>Add Student</span>
+    </button>
+    <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')"
+      class="h-11 px-5 rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      <span>Enroll Faculty</span>
+    </button>
+  </div>
+</div>
+
+<!-- Key Super-Admin Metrics (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+  <!-- Card 1: Teaching Faculty -->
+  <a href="#staff-directory"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Teaching Faculty</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">badge</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">{{ approved_staff_users|length }}</span>
+        <span class="text-secondary text-headline-md font-normal">active</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+        Authorized examiners &bull; Dept of MCA
+      </div>
+    </div>
+  </a>
+
+  <!-- Card 2: Student Candidates -->
+  <a href="#students-crud"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Enrolled Student Profiles</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">school</span>
+      </div>
+    </div>
+    <div>
+      <div class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">{{ total_candidates }}</div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Full candidate CRUD active</div>
+    </div>
+  </a>
+
+  <!-- Card 3: Support & Academic Tickets -->
+  <a href="#tickets-section"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Support &amp; Academic Tickets</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">support_agent</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">{{ open_tickets }}</span>
+        <span class="text-secondary text-headline-md font-normal">open</span>
+        <span class="text-on-surface-variant text-body-sm font-normal">/ {{ total_tickets }} total</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Student &amp; faculty inquiries</div>
+    </div>
+  </a>
+
+  <!-- Card 4: System Assessment Stats -->
+  <div
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7]">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Examination Health</span>
+      <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center">
+        <span class="material-symbols-outlined text-[20px] text-primary">assignment_turned_in</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">{{ published_exams }}</span>
+        <span class="text-secondary text-headline-md font-normal">/ {{ total_exams }} active</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">{{ total_submissions }} submissions &bull; {{ pass_rate }}% pass</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: Faculty & Teaching Staff Management -->
+<div id="staff-directory"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <div class="flex items-center gap-2">
+        <h2 class="font-headline-md text-headline-md text-[#1B1B1D]">Teaching Faculty &amp; Staff Directory</h2>
+        <span class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-primary-container/10 text-primary">
+          {{ approved_staff_users|length }} Active Members
+        </span>
+      </div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Authorized MCA department professors, course examiners, and academic staff coordinators.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">person_add</span>
+        <span>Enroll Faculty</span>
+      </button>
+      <a href="{{ url_for('admin_staff_page') }}"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1 w-fit">
+        <span>Full Directory</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Approved Staff Snapshot -->
+  {% if approved_staff_users %}
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-2.5 px-4 font-medium rounded-l-xl">Active Faculty Member</th>
+          <th class="py-2.5 px-4 font-medium">Department</th>
+          <th class="py-2.5 px-4 font-medium">Designation</th>
+          <th class="py-2.5 px-4 font-medium">Contact</th>
+          <th class="py-2.5 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        {% for st in approved_staff_users %}
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0">
+                {{ st.full_name[:2]|upper }}
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">{{ st.full_name }}</span>
+                <span class="text-on-surface-variant text-[11px] font-mono">{{ st.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-on-surface-variant">{{ st.department or 'Department of MCA' }}</td>
+          <td class="py-3 px-4 text-on-surface">{{ st.designation or 'Faculty Examiner' }}</td>
+          <td class="py-3 px-4 text-on-surface-variant">{{ st.contact_number or '—' }}</td>
+          <td class="py-3 px-4 text-right">
+            <form action="{{ url_for('admin_delete_staff', user_id=st.id) }}" method="POST" class="inline"
+              onsubmit="return confirm('Remove faculty privileges for {{ st.full_name }}?');">
+              <button type="submit"
+                class="h-7 w-7 rounded-lg text-on-surface-variant hover:text-rose-600 hover:bg-rose-50 inline-flex items-center justify-center transition-colors"
+                title="Remove Faculty">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="p-4 rounded-xl bg-surface-container-low text-center text-secondary text-body-sm">
+    No faculty members enrolled yet. Use &ldquo;Enroll Faculty&rdquo; to add professors.
+  </div>
+  {% endif %}
+</div>
+
+<!-- SECTION 2: Student Profiles Directory -->
+<div id="students-crud"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Student Profiles &amp; Candidate Management (CRUD)
+      </h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Create, inspect, update credentials, reset passwords, or delete enrolled MCA student accounts.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('addStudentModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">add</span>
+        <span>New Student</span>
+      </button>
+      <a href="{{ url_for('admin_students_page') }}"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+        <span>View Full Roster</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Student ID / Roll No</th>
+          <th class="py-3 px-4 font-medium">Candidate Name</th>
+          <th class="py-3 px-4 font-medium">Contact &amp; Email</th>
+          <th class="py-3 px-4 font-medium">Attempts / Performance</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">CRUD Operations</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        {% for stu in students_list[:6] %}
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            {{ stu.roll_number or ('ID-' ~ stu.id) }}
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                {{ stu.full_name[:2]|upper }}
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">{{ stu.full_name }}</span>
+                <span class="text-on-surface-variant text-[11px]">User: {{ stu.username }}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">{{ stu.email }}</span>
+            <span class="text-on-surface-variant text-[12px]">{{ stu.contact_number or '+91 98231 44550' }}</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">{{ stu.attempts_count }} tests</span>
+              {% if stu.attempts_count > 0 %}
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold {% if (stu.avg_score or 0) >= 60 %}bg-emerald-100 text-emerald-800{% else %}bg-amber-100 text-amber-800{% endif %}">
+                {{ stu.avg_score }}% avg
+              </span>
+              {% else %}
+              <span class="text-on-surface-variant text-[12px]">Pending</span>
+              {% endif %}
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('{{ stu.id }}', '{{ stu.full_name|replace("'", "\\'") }}', '{{ stu.roll_number }}', '{{ stu.email }}', '{{ stu.contact_number or '' }}')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('{{ stu.id }}', '{{ stu.full_name|replace("'", "\\'") }}')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="{{ url_for('admin_delete_student', student_id=stu.id) }}" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account {{ stu.full_name }} ({{ stu.roll_number }})?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 3: Support & Academic Query Tickets -->
+<div id="tickets-section"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <div class="flex items-center gap-2">
+        <h2 class="font-headline-md text-headline-md text-on-surface">Academic &amp; Technical Support Tickets</h2>
+        <span
+          class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-secondary-container text-on-secondary-container">
+          {{ open_tickets }} Open / {{ total_tickets }} Total
+        </span>
+      </div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Monitor student queries, exam dispute inquiries, and academic assistance tickets.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('newTicketModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">add</span>
+        <span>Log Query</span>
+      </button>
+      <a href="{{ url_for('admin_tickets_page') }}"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+        <span>Full Ticket Desk</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-2.5 px-4 font-medium rounded-l-xl">Ticket #</th>
+          <th class="py-2.5 px-4 font-medium">Submitter</th>
+          <th class="py-2.5 px-4 font-medium">Subject &amp; Category</th>
+          <th class="py-2.5 px-4 font-medium">Priority</th>
+          <th class="py-2.5 px-4 font-medium">Status</th>
+          <th class="py-2.5 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        {% for t in recent_tickets[:5] %}
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-{{ "%04d"|format(t.id) }}</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">{{ t.name }}</span>
+            <span class="text-on-surface-variant text-[11px]">{{ t.user_role|upper }} &bull; {{ t.email }}</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">{{ t.category
+              }}</span>
+            <span class="font-medium text-on-surface line-clamp-1">{{ t.subject }}</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            {% if t.priority == 'High' or t.priority == 'Urgent' %}
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+              {{ t.priority }}
+            </span>
+            {% elif t.priority == 'Medium' %}
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Medium
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700">
+              Low
+            </span>
+            {% endif %}
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            {% if t.status == 'Open' %}
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-amber-100 text-amber-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+              Open
+            </span>
+            {% elif t.status == 'In Progress' %}
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-blue-100 text-blue-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+              In Progress
+            </span>
+            {% elif t.status == 'Resolved' %}
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-emerald-100 text-emerald-800">
+              Resolved
+            </span>
+            {% else %}
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-slate-100 text-slate-700">
+              Closed
+            </span>
+            {% endif %}
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('{{ t.id }}', '{{ t.status }}', '{{ (t.resolution_notes or '')|replace("'", "\\'") }}')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 4: System Governance & Maintenance Controls -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-lg">
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-[24px]">database</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">SQLite WAL Storage</span>
+      <span class="text-on-surface-variant text-body-sm">FK integrity &amp; atomic transactions active</span>
+    </div>
+  </div>
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-emerald-600">
+      <span class="material-symbols-outlined text-[24px]">verified_user</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">Role Segregation</span>
+      <span class="text-on-surface-variant text-body-sm">Admin, Faculty/Staff, and Candidate RBAC</span>
+    </div>
+  </div>
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-[24px]">security</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">Proctoring Telemetry</span>
+      <span class="text-on-surface-variant text-body-sm">Fullscreen lock &amp; defocus detection active</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODALS -->
+<!-- ========================================================================= -->
+
+<!-- Modal: Add New Student -->
+<div id="addStudentModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Add New Student</h3>
+      <button onclick="document.getElementById('addStudentModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form method="POST" action="{{ url_for('admin_create_student') }}">
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name</label>
+          <input type="text" name="full_name" required placeholder="e.g. Shruti V. Kulkarni"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Roll Number / Student ID</label>
+          <input type="text" name="roll_number" required placeholder="e.g. MCA2026-007"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm uppercase focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email Address</label>
+          <input type="email" name="email" required placeholder="e.g. shruti.k@acmi.edu.in"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+          <input type="text" name="contact_number" placeholder="+91 98231 XXXXX"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+          <input type="text" name="password" value="student123"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('addStudentModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Register Student
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Edit Student Info -->
+<div id="editStudentModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Edit Student Profile</h3>
+      <button onclick="document.getElementById('editStudentModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="editStudentForm" method="POST" action="">
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name</label>
+          <input type="text" id="editFullName" name="full_name" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Roll Number / Student ID</label>
+          <input type="text" id="editRollNumber" name="roll_number" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm uppercase focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email Address</label>
+          <input type="email" id="editEmail" name="email" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+          <input type="text" id="editContactNumber" name="contact_number"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('editStudentModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Reset Password -->
+<div id="resetPasswordModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-sm w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Reset Password</h3>
+      <button onclick="document.getElementById('resetPasswordModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="resetPasswordForm" method="POST" action="">
+      <p class="text-body-sm text-on-surface-variant mb-3">
+        Set a new password for <strong id="resetStudentName" class="text-on-surface">Student</strong>.
+      </p>
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">New Password</label>
+          <input type="password" name="new_password" required placeholder="Minimum 6 characters"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('resetPasswordModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Set Password
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Update Ticket Status -->
+<div id="updateTicketModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface" id="modalTicketTitle">Update Ticket</h3>
+      <button onclick="document.getElementById('updateTicketModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="updateTicketForm" method="POST" action="">
+      <div class="space-y-4">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Status</label>
+          <select id="modalStatusSelect" name="status"
+            class="w-full h-11 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-md focus:border-primary focus:outline-none">
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Administrative Remarks /
+            Notes</label>
+          <textarea id="modalNotesTextarea" name="resolution_notes" rows="3" placeholder="Provide action notes..."
+            class="w-full p-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('updateTicketModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Save Status
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Create New Ticket -->
+<div id="newTicketModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-lg w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Log Support Ticket</h3>
+      <button onclick="document.getElementById('newTicketModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form method="POST" action="{{ url_for('submit_support_ticket') }}">
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Submitter Name</label>
+            <input type="text" name="name" required value="{{ current_user.full_name }}"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email</label>
+            <input type="email" name="email" required value="{{ current_user.email }}"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Category</label>
+            <select name="category"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none">
+              <option value="Academic Support">Academic Support</option>
+              <option value="Exam Query">Exam Query</option>
+              <option value="Technical Issue">Technical Issue</option>
+              <option value="Account Security">Account Security</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Priority</label>
+            <select name="priority"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Subject</label>
+          <input type="text" name="subject" required placeholder="Brief summary of query..."
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Detailed Description</label>
+          <textarea name="message" rows="3" required placeholder="Provide complete information..."
+            class="w-full p-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('newTicketModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Submit Ticket
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Enroll Faculty Modal -->
+<div id="addFacultyModal"
+  class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl shadow-xl max-w-md w-full p-6">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container-highest">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Enroll New Faculty Member</h3>
+      <button onclick="document.getElementById('addFacultyModal').classList.add('hidden')"
+        class="text-secondary hover:text-on-surface">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form method="POST" action="{{ url_for('admin_create_staff') }}" class="pt-4 space-y-3">
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name &amp; Title</label>
+        <input type="text" name="full_name" required placeholder="e.g. Dr. Priya S. Deshmukh"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Username / Faculty ID</label>
+          <input type="text" name="username" required placeholder="e.g. prof_deshmukh"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Designation</label>
+          <input type="text" name="designation" placeholder="e.g. Associate Professor" value="Assistant Professor"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Department</label>
+        <input type="text" name="department" value="Department of MCA"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Academic Email</label>
+        <input type="email" name="email" required placeholder="e.g. priya.deshmukh@acmi.edu.in"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+        <input type="text" name="contact_number" placeholder="+91 98220 XXXXX"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+        <input type="text" name="password" value="staff123"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="document.getElementById('addFacultyModal').classList.add('hidden')"
+          class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+          Cancel
+        </button>
+        <button type="submit"
+          class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+          Enroll Faculty
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openEditStudentModal(id, name, roll, email, contact) {
+    document.getElementById('editStudentForm').action = '/admin/students/' + id + '/edit';
+    document.getElementById('editFullName').value = name;
+    document.getElementById('editRollNumber').value = roll;
+    document.getElementById('editEmail').value = email;
+    document.getElementById('editContactNumber').value = contact || '';
+    document.getElementById('editStudentModal').classList.remove('hidden');
+  }
+
+  function openResetPasswordModal(id, name) {
+    document.getElementById('resetPasswordForm').action = '/admin/students/' + id + '/reset-password';
+    document.getElementById('resetStudentName').textContent = name;
+    document.getElementById('resetPasswordModal').classList.remove('hidden');
+  }
+
+  function openUpdateTicketModal(ticketId, currentStatus, currentNotes) {
+    const form = document.getElementById('updateTicketForm');
+    form.action = '/admin/tickets/' + ticketId + '/status';
+    document.getElementById('modalTicketTitle').textContent = 'Update Ticket #TK-' + String(ticketId).padStart(4, '0');
+    document.getElementById('modalStatusSelect').value = currentStatus;
+    document.getElementById('modalNotesTextarea').value = currentNotes || '';
+    document.getElementById('updateTicketModal').classList.remove('hidden');
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Faculty Administration Console — ExamPro SPPU{% endblock %}
+
+{% block layout %}
+<!-- Fixed Left Sidebar (w-60 collapsible) -->
+<aside id="adminSidebar" class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md border-r border-surface-container-highest/60 transition-transform duration-300">
+  <div class="flex flex-col gap-space-lg">
+    <!-- Brand / Department Title with Sidebar Toggle Button -->
+    <div class="flex items-center justify-between px-space-xs py-space-xs">
+      <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-space-sm min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm shrink-0">SP</div>
+        <div class="flex flex-col min-w-0" id="sidebarBrandText">
+          <span class="font-title text-title text-on-surface truncate leading-tight">ExamPro Admin</span>
+          <span class="text-[11px] text-secondary font-medium truncate">SPPU MCA Portal</span>
+        </div>
+      </a>
+      <!-- Sidebar Toggle Icon: shows < when open, = when closed -->
+      <button type="button" id="sidebarToggleBtn" class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors shrink-0" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+        <span id="sidebarToggleIcon" class="material-symbols-outlined text-[18px]">chevron_left</span>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex flex-col gap-space-xs">
+      {% if current_user and current_user.role == 'staff' %}
+        <!-- Faculty & Staff Navigation -->
+        <a href="{{ url_for('staff_dashboard') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'staff_dashboard' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">dashboard</span>
+          <span class="font-label-md text-label-md sidebar-label">Faculty Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('admin_exams_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_exams_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span class="font-label-md text-label-md sidebar-label">Manage Tests</span>
+        </a>
+
+        <a href="{{ url_for('admin_questions_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_questions_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span class="font-label-md text-label-md sidebar-label">Question Bank</span>
+        </a>
+
+        <a href="{{ url_for('admin_reports_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_reports_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+          <span class="font-label-md text-label-md sidebar-label">Results &amp; Reports</span>
+        </a>
+
+      {% else %}
+        <!-- Super-Admin Governance Navigation -->
+        <a href="{{ url_for('admin_dashboard') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_dashboard' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+          <span class="font-label-md text-label-md sidebar-label">Overview Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('admin_staff_page') }}" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_staff_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+            <span class="font-label-md text-label-md sidebar-label">Faculty &amp; Staff</span>
+          </div>
+          {% if pending_staff_count and pending_staff_count > 0 %}
+            <span class="px-2 py-0.5 rounded-full bg-error text-on-error text-[11px] font-bold animate-pulse">{{ pending_staff_count }}</span>
+          {% endif %}
+        </a>
+
+        <a href="{{ url_for('admin_students_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_students_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">school</span>
+          <span class="font-label-md text-label-md sidebar-label">Student Profiles</span>
+        </a>
+
+        <a href="{{ url_for('admin_tickets_page') }}" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_tickets_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">support_agent</span>
+            <span class="font-label-md text-label-md sidebar-label">Support Tickets</span>
+          </div>
+        </a>
+
+        <div class="pt-2 pb-1 px-space-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-outline sidebar-label">Exam Operations</span>
+        </div>
+
+        <a href="{{ url_for('admin_exams_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_exams_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span class="font-label-md text-label-md sidebar-label">Exams</span>
+        </a>
+
+        <a href="{{ url_for('admin_questions_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_questions_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span class="font-label-md text-label-md sidebar-label">Question Bank</span>
+        </a>
+
+        <a href="{{ url_for('admin_reports_page') }}" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors {% if request.endpoint == 'admin_reports_page' %}bg-secondary-container text-primary font-title{% else %}text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface{% endif %}">
+          <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+          <span class="font-label-md text-label-md sidebar-label">Reports &amp; Results</span>
+        </a>
+      {% endif %}
+    </nav>
+  </div>
+
+  <!-- User Profile & Sign Out Footer -->
+  <div class="flex flex-col gap-space-xs pt-space-md border-t border-surface-container-highest/60">
+    <div class="flex items-center gap-space-sm px-space-xs py-space-xs">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 font-semibold text-xs shadow-sm">
+        {{ (current_user.full_name or 'Prof')[:2]|upper }}
+      </div>
+      <div class="flex flex-col min-w-0 sidebar-label">
+        <span class="font-label-md text-label-md text-on-surface truncate">
+          {{ current_user.full_name or 'Prof. Jaydeep S. Karpe' }}
+        </span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant truncate">
+          Faculty / Admin
+        </span>
+      </div>
+    </div>
+    <a class="flex items-center gap-space-sm px-space-md py-space-xs rounded-xl text-error hover:bg-error-container hover:text-on-error-container transition-colors" href="{{ url_for('admin_logout') }}">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="font-label-md text-label-md sidebar-label">Sign out</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Top Fixed Header & Main Content -->
+<div id="adminMainWrapper" class="pl-60 transition-[padding] duration-300">
+  <header id="adminTopHeader" class="fixed top-0 left-60 right-0 h-16 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl border-b border-surface-container-highest/60 transition-[left] duration-300">
+    <div class="flex items-center gap-space-sm text-on-surface-variant">
+      <!-- Floating Unfold Button when Sidebar is closed -->
+      <button type="button" id="headerUnfoldBtn" class="hidden w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface items-center justify-center transition-colors" title="Open Sidebar">
+        <span class="material-symbols-outlined text-[20px]">menu</span>
+      </button>
+      <span class="material-symbols-outlined text-[20px] text-primary">school</span>
+      <span class="font-label-md text-label-md truncate">Faculty Administration Console &bull; Department of MCA, SPPU</span>
+    </div>
+    <div class="flex items-center gap-space-md">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-[18px]">person</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scrollable Main Content -->
+  <main class="relative pt-16 w-full bg-surface min-h-screen px-space-xl py-space-lg">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-space-md space-y-2">
+          {% for category, message in messages %}
+            <div class="p-4 rounded-xl text-body-sm flex items-center justify-between gap-2 shadow-sm {% if category == 'danger' or category == 'warning' %}bg-error-container text-on-error-container{% elif category == 'success' %}bg-[#E8F6EC] text-[#176B31]{% else %}bg-secondary-container text-on-secondary-container{% endif %}">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px]">
+                  {% if category == 'success' %}check_circle{% elif category == 'danger' %}error{% else %}info{% endif %}
+                </span>
+                <span>{{ message }}</span>
+              </div>
+              <button type="button" class="cursor-pointer text-current opacity-70 hover:opacity-100" onclick="this.parentElement.remove();">&times;</button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="flex flex-col w-full">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+</div>
+
+<script>
+  // Admin Sidebar Collapse Toggle Logic:
+  // When OPEN: shows '<' (chevron_left)
+  // When CLOSED: shows '=' (menu)
+  (function() {
+    const sidebar = document.getElementById('adminSidebar');
+    const wrapper = document.getElementById('adminMainWrapper');
+    const header = document.getElementById('adminTopHeader');
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    const headerUnfoldBtn = document.getElementById('headerUnfoldBtn');
+    const toggleIcon = document.getElementById('sidebarToggleIcon');
+
+    let isOpen = true;
+
+    function setSidebarState(open) {
+      isOpen = open;
+      if (isOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        wrapper.classList.add('pl-60');
+        wrapper.classList.remove('pl-0');
+        header.classList.add('left-60');
+        header.classList.remove('left-0');
+        headerUnfoldBtn.classList.add('hidden');
+        headerUnfoldBtn.classList.remove('flex');
+        toggleIcon.textContent = 'chevron_left';
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        wrapper.classList.remove('pl-60');
+        wrapper.classList.add('pl-0');
+        header.classList.remove('left-60');
+        header.classList.add('left-0');
+        headerUnfoldBtn.classList.remove('hidden');
+        headerUnfoldBtn.classList.add('flex');
+        toggleIcon.textContent = 'menu';
+      }
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => setSidebarState(!isOpen));
+    }
+    if (headerUnfoldBtn) {
+      headerUnfoldBtn.addEventListener('click', () => setSidebarState(true));
+    }
+  })();
+</script>
+{% endblock %}

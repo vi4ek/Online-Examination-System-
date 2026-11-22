@@ -1,0 +1,66 @@
+{% extends "student/base_student.html" %}
+
+{% block title %}Authorized Examinations — ExamPro SPPU{% endblock %}
+
+{% block content %}
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm p-6 sm:p-8 border border-surface-container-highest/60 space-y-space-md">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm border-b border-surface-container-highest/60">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Available Examination Sessions</h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">Central Examination Board authorized online testing modules</p>
+    </div>
+    <span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium self-start sm:self-auto">
+      {{ exams|length }} Active Sessions
+    </span>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="text-on-surface-variant font-label-md text-label-md bg-surface-container-low/60 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Examination Title</th>
+          <th class="py-3 px-4 font-medium">Curriculum Subject</th>
+          <th class="py-3 px-4 font-medium">Duration</th>
+          <th class="py-3 px-4 font-medium">Items</th>
+          <th class="py-3 px-4 font-medium">Total Marks</th>
+          <th class="py-3 px-4 font-medium">Pass Benchmark</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/30">
+        {% for exam in exams %}
+          <tr class="hover:bg-surface-container-low/40 transition-colors">
+            <td class="py-4 px-4 font-body-md text-body-md text-on-surface font-medium">
+              <div>{{ exam.title }}</div>
+              {% if exam.instructions %}
+                <div class="text-[12px] text-secondary font-normal mt-0.5 line-clamp-1">{{ exam.instructions }}</div>
+              {% endif %}
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">
+              <span class="px-2.5 py-1 rounded-lg bg-surface-container-high text-secondary font-label-sm text-label-sm font-medium">
+                {{ exam.subject_code }}
+              </span>
+            </td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">{{ exam.duration_minutes }} mins</td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">{{ exam.question_count }} MCQs</td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface font-semibold">{{ exam.total_marks }} marks</td>
+            <td class="py-4 px-4 font-body-sm text-body-sm text-on-surface-variant">{{ exam.pass_marks }} marks</td>
+            <td class="py-4 px-4 text-right">
+              <a href="{{ url_for('student_take_exam', exam_id=exam.id) }}" class="inline-flex items-center gap-1 h-9 px-4 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md hover:opacity-95 active:scale-[0.99] transition-all shadow-sm">
+                <span>Commence</span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </a>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="7" class="py-8 text-center text-on-surface-variant font-body-sm">
+              No examination sessions are currently active. Please check back later.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
