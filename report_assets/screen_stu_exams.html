@@ -1,5 +1,249 @@
-<!doctype html>
-<html lang=en>
-<title>Redirecting...</title>
-<h1>Redirecting...</h1>
-<p>You should be redirected automatically to the target URL: <a href="/student/login">/student/login</a>. If not, click the link.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Portal Sign In — Savitribai Phule Pune University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#e4e2e4",
+            "on-primary-container": "#fcfbff",
+            "primary-fixed-dim": "#abc7ff",
+            "surface-bright": "#fcf8fb",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#3f484f",
+            "tertiary": "#9b3f00",
+            "surface-container-high": "#eae7ea",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f6f3f5",
+            "error-container": "#ffdad6",
+            "on-primary-fixed": "#001b3f",
+            "on-tertiary-fixed": "#341000",
+            "on-secondary-container": "#5b646b",
+            "secondary": "#565f67",
+            "on-background": "#1b1b1d",
+            "tertiary-container": "#c25100",
+            "on-surface-variant": "#414753",
+            "outline-variant": "#c1c6d6",
+            "on-secondary-fixed": "#141d23",
+            "secondary-fixed": "#dbe4ec",
+            "surface-dim": "#dcd9dc",
+            "tertiary-fixed": "#ffdbcb",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "outline": "#717785",
+            "secondary-container": "#d8e1ea",
+            "on-tertiary-fixed-variant": "#7a3000",
+            "inverse-surface": "#303032",
+            "background": "#fcf8fb",
+            "inverse-on-surface": "#f3f0f2",
+            "on-primary-fixed-variant": "#00458f",
+            "inverse-primary": "#abc7ff",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#bec8d0",
+            "on-tertiary-container": "#fffaf9",
+            "on-surface": "#1b1b1d",
+            "surface-container": "#f0edef",
+            "primary": "#0059b5",
+            "primary-fixed": "#d7e2ff",
+            "tertiary-fixed-dim": "#ffb693",
+            "primary-container": "#0071e3",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e4e2e4",
+            "surface-tint": "#005cbb",
+            "error": "#ba1a1a",
+            "surface": "#fcf8fb"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.75rem",
+            "space-xs": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem"
+          },
+          fontFamily: {
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "title": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "body-md": ["15px", { lineHeight: "22px", fontWeight: "400" }],
+            "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "title": ["17px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "label-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "body-lg": ["17px", { lineHeight: "26px", fontWeight: "400" }],
+            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }]
+          }
+        }
+      }
+    };
+  </script>
+  
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex items-center justify-center p-margin">
+  
+<main class="w-full max-w-xl">
+  <div class="flex flex-col w-full">
+    <div class="w-full max-w-[420px] mx-auto flex flex-col items-center">
+      <!-- Institutional Identification -->
+      <header class="flex flex-col items-center text-center mb-8">
+        <div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center mb-4 shadow-sm text-primary">
+          <span class="material-symbols-outlined" style="font-size: 26px;">account_balance</span>
+        </div>
+        <span class="font-label-sm text-label-sm text-secondary tracking-normal uppercase mb-1">
+          Savitribai Phule Pune University
+        </span>
+        <h2 class="font-title text-title text-on-surface">
+          Department of MCA
+        </h2>
+      </header>
+
+      <!-- Main Authentication Surface -->
+      <div class="w-full bg-surface-container-lowest rounded-[20px] shadow-sm p-8 sm:p-9 flex flex-col border border-surface-container-highest/60">
+        <!-- Card Heading -->
+        <div class="flex flex-col mb-7">
+          <div class="flex items-center justify-between mb-2">
+            <h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+              Student portal
+            </h1>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container text-secondary">
+              MCA Dept
+            </span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Sign in with your Permanent Registration Number (PRN) or roll number to access examination hall and results.
+          </p>
+        </div>
+
+        <!-- Flash messages -->
+        
+          
+            <div class="mb-5 space-y-2">
+              
+                <div class="p-3 rounded-xl text-body-sm flex items-center gap-2 bg-error-container text-on-error-container">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                  <span>Please sign in with your student account to access the candidate examination portal.</span>
+                </div>
+              
+            </div>
+          
+        
+
+        <!-- Sign-in Form -->
+        <form class="flex flex-col gap-5" method="POST" action="/student/login">
+          <!-- PRN / Identifier Input -->
+          <div class="flex flex-col gap-1.5">
+            <label class="font-label-md text-label-md text-on-surface font-medium" for="studentIdentifier">
+              PRN, roll number or email
+            </label>
+            <div class="relative flex items-center">
+              <input autocomplete="username" class="w-full h-11 px-3.5 bg-surface rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline transition-colors outline-none focus:ring-2 focus:ring-primary-container border border-surface-container-highest" id="studentIdentifier" name="username" placeholder="e.g. aarav or MCA2026-001" required="" spellcheck="false" type="text" autofocus/>
+            </div>
+            <span class="font-label-sm text-label-sm text-secondary">Format: 10-digit PRN or student roll (e.g., MCA2026-001)</span>
+          </div>
+
+          <!-- Password Input -->
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-label-md text-label-md text-on-surface font-medium" for="studentPassword">
+                Password
+              </label>
+              <a class="font-label-sm text-label-sm text-primary hover:text-primary-container transition-colors focus:outline-none" href="#">
+                Forgot password?
+              </a>
+            </div>
+            <div class="relative flex items-center">
+              <input class="w-full h-11 px-3.5 pr-11 bg-surface rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline transition-colors outline-none focus:ring-2 focus:ring-primary-container border border-surface-container-highest" id="studentPassword" name="password" placeholder="Enter password" required="" type="password"/>
+              <button aria-label="Toggle password visibility" class="absolute right-2.5 w-7 h-7 flex items-center justify-center text-outline hover:text-on-surface transition-colors rounded-lg focus:outline-none" onclick="const p = document.getElementById('studentPassword'); p.type = p.type === 'password' ? 'text' : 'password';" type="button">
+                <span class="material-symbols-outlined" style="font-size: 20px;">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Session Security Notice -->
+          <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-container-low text-secondary mt-1">
+            <span class="material-symbols-outlined" style="font-size: 18px;">lock</span>
+            <span class="font-label-sm text-label-sm">Secured session for semester examination</span>
+          </div>
+
+          <!-- Primary CTA -->
+          <button class="w-full h-11 bg-primary-container hover:bg-primary active:bg-primary text-on-primary font-label-md text-label-md rounded-xl flex items-center justify-center transition-colors shadow-sm mt-2 focus:outline-none cursor-pointer" type="submit">
+            Sign in to candidate portal
+          </button>
+        </form>
+
+        <!-- Institutional Portal Switcher Navigation -->
+        <div class="pt-6 mt-6 border-t border-surface-container flex flex-col items-center gap-3">
+          <div class="flex items-center justify-center gap-4 w-full">
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="/admin/login">
+              <span class="material-symbols-outlined" style="font-size: 16px;">badge</span>
+              Faculty login
+            </a>
+            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="/student/register">
+              <span class="material-symbols-outlined" style="font-size: 16px;">person_add</span>
+              Register
+            </a>
+            <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+            <a class="font-label-sm text-label-sm text-secondary hover:text-on-surface transition-colors flex items-center gap-1 focus:outline-none" href="/">
+              <span class="material-symbols-outlined" style="font-size: 16px;">arrow_back</span>
+              Home
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supplementary Compliance Meta -->
+      <div class="mt-8 flex flex-col items-center text-center gap-2">
+        <div class="flex items-center gap-2 text-secondary">
+          <span class="font-label-sm text-label-sm">Academic Year [2024–2025]</span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          <span class="font-label-sm text-label-sm">ExamPro v4.2</span>
+        </div>
+        <p class="font-label-sm text-label-sm text-outline">
+          Ganeshkhind, Pune, Maharashtra 411007
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+  
+</body>
+</html>

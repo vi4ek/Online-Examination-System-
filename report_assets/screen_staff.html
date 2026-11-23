@@ -1,5 +1,477 @@
-<!doctype html>
-<html lang=en>
-<title>Redirecting...</title>
-<h1>Redirecting...</h1>
-<p>You should be redirected automatically to the target URL: <a href="/admin/login">/admin/login</a>. If not, click the link.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty &amp; Staff Directory — ExamPro SPPU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#e4e2e4",
+            "on-primary-container": "#fcfbff",
+            "primary-fixed-dim": "#abc7ff",
+            "surface-bright": "#fcf8fb",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#3f484f",
+            "tertiary": "#9b3f00",
+            "surface-container-high": "#eae7ea",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f6f3f5",
+            "error-container": "#ffdad6",
+            "on-primary-fixed": "#001b3f",
+            "on-tertiary-fixed": "#341000",
+            "on-secondary-container": "#5b646b",
+            "secondary": "#565f67",
+            "on-background": "#1b1b1d",
+            "tertiary-container": "#c25100",
+            "on-surface-variant": "#414753",
+            "outline-variant": "#c1c6d6",
+            "on-secondary-fixed": "#141d23",
+            "secondary-fixed": "#dbe4ec",
+            "surface-dim": "#dcd9dc",
+            "tertiary-fixed": "#ffdbcb",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "outline": "#717785",
+            "secondary-container": "#d8e1ea",
+            "on-tertiary-fixed-variant": "#7a3000",
+            "inverse-surface": "#303032",
+            "background": "#fcf8fb",
+            "inverse-on-surface": "#f3f0f2",
+            "on-primary-fixed-variant": "#00458f",
+            "inverse-primary": "#abc7ff",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#bec8d0",
+            "on-tertiary-container": "#fffaf9",
+            "on-surface": "#1b1b1d",
+            "surface-container": "#f0edef",
+            "primary": "#0059b5",
+            "primary-fixed": "#d7e2ff",
+            "tertiary-fixed-dim": "#ffb693",
+            "primary-container": "#0071e3",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e4e2e4",
+            "surface-tint": "#005cbb",
+            "error": "#ba1a1a",
+            "surface": "#fcf8fb"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.75rem",
+            "space-xs": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem"
+          },
+          fontFamily: {
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "title": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "body-md": ["15px", { lineHeight: "22px", fontWeight: "400" }],
+            "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "title": ["17px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "label-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "body-lg": ["17px", { lineHeight: "26px", fontWeight: "400" }],
+            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }]
+          }
+        }
+      }
+    };
+  </script>
+  
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased ">
+  
+<!-- Fixed Left Sidebar (w-60 collapsible) -->
+<aside id="adminSidebar" class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md border-r border-surface-container-highest/60 transition-transform duration-300">
+  <div class="flex flex-col gap-space-lg">
+    <!-- Brand / Department Title with Sidebar Toggle Button -->
+    <div class="flex items-center justify-between px-space-xs py-space-xs">
+      <a href="/admin/dashboard" class="flex items-center gap-space-sm min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm shrink-0">SP</div>
+        <div class="flex flex-col min-w-0" id="sidebarBrandText">
+          <span class="font-title text-title text-on-surface truncate leading-tight">ExamPro Admin</span>
+          <span class="text-[11px] text-secondary font-medium truncate">SPPU MCA Portal</span>
+        </div>
+      </a>
+      <!-- Sidebar Toggle Icon: shows < when open, = when closed -->
+      <button type="button" id="sidebarToggleBtn" class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors shrink-0" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+        <span id="sidebarToggleIcon" class="material-symbols-outlined text-[18px]">chevron_left</span>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex flex-col gap-space-xs">
+      
+        <!-- Super-Admin Governance Navigation -->
+        <a href="/admin/dashboard" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+          <span class="font-label-md text-label-md sidebar-label">Overview Dashboard</span>
+        </a>
+
+        <a href="/admin/staff" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors bg-secondary-container text-primary font-title">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+            <span class="font-label-md text-label-md sidebar-label">Faculty &amp; Staff</span>
+          </div>
+          
+        </a>
+
+        <a href="/admin/students" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">school</span>
+          <span class="font-label-md text-label-md sidebar-label">Student Profiles</span>
+        </a>
+
+        <a href="/admin/tickets" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">support_agent</span>
+            <span class="font-label-md text-label-md sidebar-label">Support Tickets</span>
+          </div>
+        </a>
+
+        <div class="pt-2 pb-1 px-space-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-outline sidebar-label">Exam Operations</span>
+        </div>
+
+        <a href="/admin/exams" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span class="font-label-md text-label-md sidebar-label">Exams</span>
+        </a>
+
+        <a href="/admin/questions" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span class="font-label-md text-label-md sidebar-label">Question Bank</span>
+        </a>
+
+        <a href="/admin/reports" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+          <span class="font-label-md text-label-md sidebar-label">Reports &amp; Results</span>
+        </a>
+      
+    </nav>
+  </div>
+
+  <!-- User Profile & Sign Out Footer -->
+  <div class="flex flex-col gap-space-xs pt-space-md border-t border-surface-container-highest/60">
+    <div class="flex items-center gap-space-sm px-space-xs py-space-xs">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 font-semibold text-xs shadow-sm">
+        PR
+      </div>
+      <div class="flex flex-col min-w-0 sidebar-label">
+        <span class="font-label-md text-label-md text-on-surface truncate">
+          Prof. Jaydeep Shivaji Karpe
+        </span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant truncate">
+          Faculty / Admin
+        </span>
+      </div>
+    </div>
+    <a class="flex items-center gap-space-sm px-space-md py-space-xs rounded-xl text-error hover:bg-error-container hover:text-on-error-container transition-colors" href="/admin/logout">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="font-label-md text-label-md sidebar-label">Sign out</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Top Fixed Header & Main Content -->
+<div id="adminMainWrapper" class="pl-60 transition-[padding] duration-300">
+  <header id="adminTopHeader" class="fixed top-0 left-60 right-0 h-16 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl border-b border-surface-container-highest/60 transition-[left] duration-300">
+    <div class="flex items-center gap-space-sm text-on-surface-variant">
+      <!-- Floating Unfold Button when Sidebar is closed -->
+      <button type="button" id="headerUnfoldBtn" class="hidden w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface items-center justify-center transition-colors" title="Open Sidebar">
+        <span class="material-symbols-outlined text-[20px]">menu</span>
+      </button>
+      <span class="material-symbols-outlined text-[20px] text-primary">school</span>
+      <span class="font-label-md text-label-md truncate">Faculty Administration Console &bull; Department of MCA, SPPU</span>
+    </div>
+    <div class="flex items-center gap-space-md">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-[18px]">person</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scrollable Main Content -->
+  <main class="relative pt-16 w-full bg-surface min-h-screen px-space-xl py-space-lg">
+    <!-- Flash Messages -->
+    
+      
+    
+
+    <div class="flex flex-col w-full">
+      
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm mb-1">
+      <span>Academic Personnel</span>
+      <span>&bull;</span>
+      <span>Department Faculty &amp; Examiners</span>
+    </div>
+    <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Faculty &amp; Staff Directory</h1>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+      Authorized teaching faculty, course examiners, and examination personnel for the Department of MCA
+    </p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')" class="h-11 px-4 rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">person_add</span>
+      <span>Enroll Faculty</span>
+    </button>
+  </div>
+</div>
+
+<!-- Authorized Faculty Directory Table -->
+<div class="space-y-space-sm">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h2 class="font-headline-md text-headline-md text-on-surface">Authorized Faculty Members</h2>
+      <span class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-medium">
+        2 Active Members
+      </span>
+    </div>
+  </div>
+
+  <div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden border border-surface-container-highest/60">
+    <div class="overflow-x-auto w-full">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-surface-container-low text-secondary font-label-sm text-label-sm uppercase tracking-wider select-none">
+            <th class="py-3.5 pl-6 pr-4">Faculty Member</th>
+            <th class="py-3.5 px-4">Department &amp; Role</th>
+            <th class="py-3.5 px-4">Contact Email</th>
+            <th class="py-3.5 px-4">Phone Number</th>
+            <th class="py-3.5 px-4">Exams Configured</th>
+            <th class="py-3.5 px-4">Status</th>
+            <th class="py-3.5 pl-4 pr-6 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-surface-container font-body-md text-body-md text-on-surface">
+          
+            <tr class="hover:bg-surface-container-low/40 transition-colors">
+              <td class="py-4 pl-6 pr-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    DR
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-title text-title text-on-surface font-semibold">Dr. Priya Deshmukh</span>
+                    <span class="text-xs text-secondary font-mono">ID: #8 &bull; @prof_deshmukh</span>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <div class="font-medium text-on-surface text-sm">Associate Professor &amp; Examiner</div>
+                <div class="text-xs text-secondary">Department of MCA</div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant font-body-sm">
+                priya.deshmukh@acmi.edu.in
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-mono text-xs">
+                +91 98220 99881
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-semibold">
+                2 exams
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31] font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#176B31]"></span>
+                  Authorized
+                </span>
+              </td>
+              <td class="py-4 pl-4 pr-6 whitespace-nowrap text-right">
+                <form action="/admin/staff/8/delete" method="POST" onsubmit="return confirm('Revoke authorization and remove Dr. Priya Deshmukh?');" class="inline">
+                  <button type="submit" class="h-8 px-3 rounded-lg bg-surface-container text-on-surface-variant hover:bg-error-container hover:text-on-error-container text-label-sm font-medium transition-colors cursor-pointer">
+                    Revoke Access
+                  </button>
+                </form>
+              </td>
+            </tr>
+          
+            <tr class="hover:bg-surface-container-low/40 transition-colors">
+              <td class="py-4 pl-6 pr-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                    PR
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="font-title text-title text-on-surface font-semibold">Prof. Nilesh Kulkarni</span>
+                    <span class="text-xs text-secondary font-mono">ID: #9 &bull; @prof_kulkarni</span>
+                  </div>
+                </div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <div class="font-medium text-on-surface text-sm">Assistant Professor</div>
+                <div class="text-xs text-secondary">Department of MCA</div>
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface-variant font-body-sm">
+                nilesh.kulkarni@acmi.edu.in
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-mono text-xs">
+                +91 98220 99882
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap text-on-surface font-body-sm font-semibold">
+                0 exams
+              </td>
+              <td class="py-4 px-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-[#E8F6EC] text-[#176B31] font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#176B31]"></span>
+                  Authorized
+                </span>
+              </td>
+              <td class="py-4 pl-4 pr-6 whitespace-nowrap text-right">
+                <form action="/admin/staff/9/delete" method="POST" onsubmit="return confirm('Revoke authorization and remove Prof. Nilesh Kulkarni?');" class="inline">
+                  <button type="submit" class="h-8 px-3 rounded-lg bg-surface-container text-on-surface-variant hover:bg-error-container hover:text-on-error-container text-label-sm font-medium transition-colors cursor-pointer">
+                    Revoke Access
+                  </button>
+                </form>
+              </td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Enroll Faculty Modal -->
+<div id="addFacultyModal" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl shadow-xl max-w-md w-full p-6">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container-highest">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Enroll New Faculty Member</h3>
+      <button onclick="document.getElementById('addFacultyModal').classList.add('hidden')" class="text-secondary hover:text-on-surface">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form method="POST" action="/admin/staff/create" class="pt-4 space-y-3">
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name &amp; Title</label>
+        <input type="text" name="full_name" required placeholder="e.g. Dr. Priya S. Deshmukh" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Username / Faculty ID</label>
+          <input type="text" name="username" required placeholder="e.g. prof_deshmukh" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Designation</label>
+          <input type="text" name="designation" placeholder="e.g. Associate Professor" value="Assistant Professor" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+        </div>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Department</label>
+        <input type="text" name="department" value="Department of MCA" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Academic Email</label>
+        <input type="email" name="email" required placeholder="e.g. priya.deshmukh@acmi.edu.in" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+        <input type="text" name="contact_number" placeholder="+91 98220 XXXXX" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+        <input type="text" name="password" value="staff123" class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"/>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="document.getElementById('addFacultyModal').classList.add('hidden')" class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+          Cancel
+        </button>
+        <button type="submit" class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+          Enroll Faculty
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // Admin Sidebar Collapse Toggle Logic:
+  // When OPEN: shows '<' (chevron_left)
+  // When CLOSED: shows '=' (menu)
+  (function() {
+    const sidebar = document.getElementById('adminSidebar');
+    const wrapper = document.getElementById('adminMainWrapper');
+    const header = document.getElementById('adminTopHeader');
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    const headerUnfoldBtn = document.getElementById('headerUnfoldBtn');
+    const toggleIcon = document.getElementById('sidebarToggleIcon');
+
+    let isOpen = true;
+
+    function setSidebarState(open) {
+      isOpen = open;
+      if (isOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        wrapper.classList.add('pl-60');
+        wrapper.classList.remove('pl-0');
+        header.classList.add('left-60');
+        header.classList.remove('left-0');
+        headerUnfoldBtn.classList.add('hidden');
+        headerUnfoldBtn.classList.remove('flex');
+        toggleIcon.textContent = 'chevron_left';
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        wrapper.classList.remove('pl-60');
+        wrapper.classList.add('pl-0');
+        header.classList.remove('left-60');
+        header.classList.add('left-0');
+        headerUnfoldBtn.classList.remove('hidden');
+        headerUnfoldBtn.classList.add('flex');
+        toggleIcon.textContent = 'menu';
+      }
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => setSidebarState(!isOpen));
+    }
+    if (headerUnfoldBtn) {
+      headerUnfoldBtn.addEventListener('click', () => setSidebarState(true));
+    }
+  })();
+</script>
+
+  
+</body>
+</html>

@@ -1,5 +1,1526 @@
-<!doctype html>
-<html lang=en>
-<title>Redirecting...</title>
-<h1>Redirecting...</h1>
-<p>You should be redirected automatically to the target URL: <a href="/admin/login">/admin/login</a>. If not, click the link.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Faculty Administration Console — Overview Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#e4e2e4",
+            "on-primary-container": "#fcfbff",
+            "primary-fixed-dim": "#abc7ff",
+            "surface-bright": "#fcf8fb",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#3f484f",
+            "tertiary": "#9b3f00",
+            "surface-container-high": "#eae7ea",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f6f3f5",
+            "error-container": "#ffdad6",
+            "on-primary-fixed": "#001b3f",
+            "on-tertiary-fixed": "#341000",
+            "on-secondary-container": "#5b646b",
+            "secondary": "#565f67",
+            "on-background": "#1b1b1d",
+            "tertiary-container": "#c25100",
+            "on-surface-variant": "#414753",
+            "outline-variant": "#c1c6d6",
+            "on-secondary-fixed": "#141d23",
+            "secondary-fixed": "#dbe4ec",
+            "surface-dim": "#dcd9dc",
+            "tertiary-fixed": "#ffdbcb",
+            "on-error": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "outline": "#717785",
+            "secondary-container": "#d8e1ea",
+            "on-tertiary-fixed-variant": "#7a3000",
+            "inverse-surface": "#303032",
+            "background": "#fcf8fb",
+            "inverse-on-surface": "#f3f0f2",
+            "on-primary-fixed-variant": "#00458f",
+            "inverse-primary": "#abc7ff",
+            "on-error-container": "#93000a",
+            "secondary-fixed-dim": "#bec8d0",
+            "on-tertiary-container": "#fffaf9",
+            "on-surface": "#1b1b1d",
+            "surface-container": "#f0edef",
+            "primary": "#0059b5",
+            "primary-fixed": "#d7e2ff",
+            "tertiary-fixed-dim": "#ffb693",
+            "primary-container": "#0071e3",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e4e2e4",
+            "surface-tint": "#005cbb",
+            "error": "#ba1a1a",
+            "surface": "#fcf8fb"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-sm": "0.75rem",
+            "space-xs": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem"
+          },
+          fontFamily: {
+            "body-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "title": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-xl": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          },
+          fontSize: {
+            "body-md": ["15px", { lineHeight: "22px", fontWeight: "400" }],
+            "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "body-sm": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "title": ["17px", { lineHeight: "24px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "label-md": ["14px", { lineHeight: "20px", fontWeight: "500" }],
+            "headline-xl": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "body-lg": ["17px", { lineHeight: "26px", fontWeight: "400" }],
+            "label-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }]
+          }
+        }
+      }
+    };
+  </script>
+  
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased ">
+  
+<!-- Fixed Left Sidebar (w-60 collapsible) -->
+<aside id="adminSidebar" class="fixed left-0 top-0 h-full w-60 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md border-r border-surface-container-highest/60 transition-transform duration-300">
+  <div class="flex flex-col gap-space-lg">
+    <!-- Brand / Department Title with Sidebar Toggle Button -->
+    <div class="flex items-center justify-between px-space-xs py-space-xs">
+      <a href="/admin/dashboard" class="flex items-center gap-space-sm min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold text-sm shadow-sm shrink-0">SP</div>
+        <div class="flex flex-col min-w-0" id="sidebarBrandText">
+          <span class="font-title text-title text-on-surface truncate leading-tight">ExamPro Admin</span>
+          <span class="text-[11px] text-secondary font-medium truncate">SPPU MCA Portal</span>
+        </div>
+      </a>
+      <!-- Sidebar Toggle Icon: shows < when open, = when closed -->
+      <button type="button" id="sidebarToggleBtn" class="w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors shrink-0" title="Toggle Sidebar" aria-label="Toggle Sidebar">
+        <span id="sidebarToggleIcon" class="material-symbols-outlined text-[18px]">chevron_left</span>
+      </button>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex flex-col gap-space-xs">
+      
+        <!-- Super-Admin Governance Navigation -->
+        <a href="/admin/dashboard" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors bg-secondary-container text-primary font-title">
+          <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+          <span class="font-label-md text-label-md sidebar-label">Overview Dashboard</span>
+        </a>
+
+        <a href="/admin/staff" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">badge</span>
+            <span class="font-label-md text-label-md sidebar-label">Faculty &amp; Staff</span>
+          </div>
+          
+        </a>
+
+        <a href="/admin/students" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">school</span>
+          <span class="font-label-md text-label-md sidebar-label">Student Profiles</span>
+        </a>
+
+        <a href="/admin/tickets" class="flex items-center justify-between px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <div class="flex items-center gap-space-sm">
+            <span class="material-symbols-outlined text-[20px]">support_agent</span>
+            <span class="font-label-md text-label-md sidebar-label">Support Tickets</span>
+          </div>
+        </a>
+
+        <div class="pt-2 pb-1 px-space-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-outline sidebar-label">Exam Operations</span>
+        </div>
+
+        <a href="/admin/exams" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">quiz</span>
+          <span class="font-label-md text-label-md sidebar-label">Exams</span>
+        </a>
+
+        <a href="/admin/questions" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+          <span class="font-label-md text-label-md sidebar-label">Question Bank</span>
+        </a>
+
+        <a href="/admin/reports" class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface">
+          <span class="material-symbols-outlined text-[20px]">bar_chart</span>
+          <span class="font-label-md text-label-md sidebar-label">Reports &amp; Results</span>
+        </a>
+      
+    </nav>
+  </div>
+
+  <!-- User Profile & Sign Out Footer -->
+  <div class="flex flex-col gap-space-xs pt-space-md border-t border-surface-container-highest/60">
+    <div class="flex items-center gap-space-sm px-space-xs py-space-xs">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 font-semibold text-xs shadow-sm">
+        PR
+      </div>
+      <div class="flex flex-col min-w-0 sidebar-label">
+        <span class="font-label-md text-label-md text-on-surface truncate">
+          Prof. Jaydeep Shivaji Karpe
+        </span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant truncate">
+          Faculty / Admin
+        </span>
+      </div>
+    </div>
+    <a class="flex items-center gap-space-sm px-space-md py-space-xs rounded-xl text-error hover:bg-error-container hover:text-on-error-container transition-colors" href="/admin/logout">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span class="font-label-md text-label-md sidebar-label">Sign out</span>
+    </a>
+  </div>
+</aside>
+
+<!-- Top Fixed Header & Main Content -->
+<div id="adminMainWrapper" class="pl-60 transition-[padding] duration-300">
+  <header id="adminTopHeader" class="fixed top-0 left-60 right-0 h-16 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl border-b border-surface-container-highest/60 transition-[left] duration-300">
+    <div class="flex items-center gap-space-sm text-on-surface-variant">
+      <!-- Floating Unfold Button when Sidebar is closed -->
+      <button type="button" id="headerUnfoldBtn" class="hidden w-8 h-8 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface items-center justify-center transition-colors" title="Open Sidebar">
+        <span class="material-symbols-outlined text-[20px]">menu</span>
+      </button>
+      <span class="material-symbols-outlined text-[20px] text-primary">school</span>
+      <span class="font-label-md text-label-md truncate">Faculty Administration Console &bull; Department of MCA, SPPU</span>
+    </div>
+    <div class="flex items-center gap-space-md">
+      <div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined text-[18px]">person</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scrollable Main Content -->
+  <main class="relative pt-16 w-full bg-surface min-h-screen px-space-xl py-space-lg">
+    <!-- Flash Messages -->
+    
+      
+    
+
+    <div class="flex flex-col w-full">
+      
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+  <div class="flex flex-col">
+    <div class="flex items-center gap-2">
+      <h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Overview Dashboard</h1>
+      <span class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-primary-fixed text-on-primary-fixed">
+        Super-Admin Console
+      </span>
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant mt-1">
+      Department of MCA &bull; Savitribai Phule Pune University &bull; Faculty Approvals, Student Directory CRUD,
+      Support Tickets &amp; Governance
+    </p>
+  </div>
+  <div class="flex items-center gap-space-sm">
+    <button onclick="document.getElementById('addStudentModal').classList.remove('hidden')"
+      class="h-11 px-4 rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:bg-surface-container-low transition-colors border border-surface-container-highest cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">person_add</span>
+      <span>Add Student</span>
+    </button>
+    <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')"
+      class="h-11 px-5 rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center gap-space-xs shadow-sm hover:opacity-95 transition-opacity cursor-pointer">
+      <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+      <span>Enroll Faculty</span>
+    </button>
+  </div>
+</div>
+
+<!-- Key Super-Admin Metrics (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+  <!-- Card 1: Teaching Faculty -->
+  <a href="#staff-directory"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Teaching Faculty</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">badge</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">2</span>
+        <span class="text-secondary text-headline-md font-normal">active</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+        Authorized examiners &bull; Dept of MCA
+      </div>
+    </div>
+  </a>
+
+  <!-- Card 2: Student Candidates -->
+  <a href="#students-crud"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Enrolled Student Profiles</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">school</span>
+      </div>
+    </div>
+    <div>
+      <div class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">7</div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Full candidate CRUD active</div>
+    </div>
+  </a>
+
+  <!-- Card 3: Support & Academic Tickets -->
+  <a href="#tickets-section"
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7] hover:border-primary/40 transition-colors group">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Support &amp; Academic Tickets</span>
+      <div
+        class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center group-hover:bg-primary-fixed transition-colors">
+        <span class="material-symbols-outlined text-[20px] text-primary">support_agent</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">106</span>
+        <span class="text-secondary text-headline-md font-normal">open</span>
+        <span class="text-on-surface-variant text-body-sm font-normal">/ 195 total</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">Student &amp; faculty inquiries</div>
+    </div>
+  </a>
+
+  <!-- Card 4: System Assessment Stats -->
+  <div
+    class="bg-white rounded-[18px] p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between border border-[#E5E5E7]">
+    <div class="flex items-center justify-between text-on-surface-variant mb-space-sm">
+      <span class="font-label-md text-label-md font-medium text-[#1B1B1D]">Examination Health</span>
+      <div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center">
+        <span class="material-symbols-outlined text-[20px] text-primary">assignment_turned_in</span>
+      </div>
+    </div>
+    <div>
+      <div class="flex items-baseline gap-2">
+        <span class="font-headline-xl text-headline-xl text-[#1B1B1D] font-semibold tracking-tight">3</span>
+        <span class="text-secondary text-headline-md font-normal">/ 4 active</span>
+      </div>
+      <div class="font-body-sm text-body-sm text-on-surface-variant mt-1">7 submissions &bull; 71.4% pass</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: Faculty & Teaching Staff Management -->
+<div id="staff-directory"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <div class="flex items-center gap-2">
+        <h2 class="font-headline-md text-headline-md text-[#1B1B1D]">Teaching Faculty &amp; Staff Directory</h2>
+        <span class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-primary-container/10 text-primary">
+          2 Active Members
+        </span>
+      </div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Authorized MCA department professors, course examiners, and academic staff coordinators.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('addFacultyModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">person_add</span>
+        <span>Enroll Faculty</span>
+      </button>
+      <a href="/admin/staff"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1 w-fit">
+        <span>Full Directory</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Approved Staff Snapshot -->
+  
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-2.5 px-4 font-medium rounded-l-xl">Active Faculty Member</th>
+          <th class="py-2.5 px-4 font-medium">Department</th>
+          <th class="py-2.5 px-4 font-medium">Designation</th>
+          <th class="py-2.5 px-4 font-medium">Contact</th>
+          <th class="py-2.5 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0">
+                DR
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Dr. Priya Deshmukh</span>
+                <span class="text-on-surface-variant text-[11px] font-mono">priya.deshmukh@acmi.edu.in</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-on-surface-variant">Department of MCA</td>
+          <td class="py-3 px-4 text-on-surface">Associate Professor &amp; Examiner</td>
+          <td class="py-3 px-4 text-on-surface-variant">+91 98220 99881</td>
+          <td class="py-3 px-4 text-right">
+            <form action="/admin/staff/8/delete" method="POST" class="inline"
+              onsubmit="return confirm('Remove faculty privileges for Dr. Priya Deshmukh?');">
+              <button type="submit"
+                class="h-7 w-7 rounded-lg text-on-surface-variant hover:text-rose-600 hover:bg-rose-50 inline-flex items-center justify-center transition-colors"
+                title="Remove Faculty">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-7 h-7 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs shrink-0">
+                PR
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Prof. Nilesh Kulkarni</span>
+                <span class="text-on-surface-variant text-[11px] font-mono">nilesh.kulkarni@acmi.edu.in</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-on-surface-variant">Department of MCA</td>
+          <td class="py-3 px-4 text-on-surface">Assistant Professor</td>
+          <td class="py-3 px-4 text-on-surface-variant">+91 98220 99882</td>
+          <td class="py-3 px-4 text-right">
+            <form action="/admin/staff/9/delete" method="POST" class="inline"
+              onsubmit="return confirm('Remove faculty privileges for Prof. Nilesh Kulkarni?');">
+              <button type="submit"
+                class="h-7 w-7 rounded-lg text-on-surface-variant hover:text-rose-600 hover:bg-rose-50 inline-flex items-center justify-center transition-colors"
+                title="Remove Faculty">
+                <span class="material-symbols-outlined text-[16px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+<!-- SECTION 2: Student Profiles Directory -->
+<div id="students-crud"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <h2 class="font-headline-md text-headline-md text-on-surface">Student Profiles &amp; Candidate Management (CRUD)
+      </h2>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Create, inspect, update credentials, reset passwords, or delete enrolled MCA student accounts.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('addStudentModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">add</span>
+        <span>New Student</span>
+      </button>
+      <a href="/admin/students"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+        <span>View Full Roster</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-3 px-4 font-medium rounded-l-xl">Student ID / Roll No</th>
+          <th class="py-3 px-4 font-medium">Candidate Name</th>
+          <th class="py-3 px-4 font-medium">Contact &amp; Email</th>
+          <th class="py-3 px-4 font-medium">Attempts / Performance</th>
+          <th class="py-3 px-4 font-medium text-right rounded-r-xl">CRUD Operations</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-001
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                AA
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Aarav Sharma</span>
+                <span class="text-on-surface-variant text-[11px]">User: aarav</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">aarav.new@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 99999 88888</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">2 tests</span>
+              
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+                100.0% avg
+              </span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('2', 'Aarav Sharma', 'MCA2026-001', 'aarav.new@acmi.edu.in', '+91 99999 88888')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('2', 'Aarav Sharma')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/2/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Aarav Sharma (MCA2026-001)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-002
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                PO
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Pooja D. Deshmukh</span>
+                <span class="text-on-surface-variant text-[11px]">User: pooja</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">pooja.updated@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 91234 56789</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">1 tests</span>
+              
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+                80.0% avg
+              </span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('3', 'Pooja D. Deshmukh', 'MCA2026-002', 'pooja.updated@acmi.edu.in', '+91 91234 56789')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('3', 'Pooja D. Deshmukh')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/3/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Pooja D. Deshmukh (MCA2026-002)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-003
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                RO
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Rohan Kulkarni</span>
+                <span class="text-on-surface-variant text-[11px]">User: rohan</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">rohan.k@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 98231 44553</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">2 tests</span>
+              
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800">
+                40.0% avg
+              </span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('4', 'Rohan Kulkarni', 'MCA2026-003', 'rohan.k@acmi.edu.in', '+91 98231 44553')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('4', 'Rohan Kulkarni')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/4/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Rohan Kulkarni (MCA2026-003)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-004
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                SN
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Sneha Patil</span>
+                <span class="text-on-surface-variant text-[11px]">User: sneha</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">sneha.patil@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 98231 44554</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">1 tests</span>
+              
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+                100.0% avg
+              </span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('5', 'Sneha Patil', 'MCA2026-004', 'sneha.patil@acmi.edu.in', '+91 98231 44554')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('5', 'Sneha Patil')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/5/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Sneha Patil (MCA2026-004)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-005
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                VI
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Vikramaditya Shinde</span>
+                <span class="text-on-surface-variant text-[11px]">User: vikram</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">vikram.s@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 98231 44555</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">1 tests</span>
+              
+              <span
+                class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800">
+                80.0% avg
+              </span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('6', 'Vikramaditya Shinde', 'MCA2026-005', 'vikram.s@acmi.edu.in', '+91 98231 44555')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('6', 'Vikramaditya Shinde')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/6/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Vikramaditya Shinde (MCA2026-005)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3.5 px-4 font-mono font-semibold text-primary">
+            MCA2026-088
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div
+                class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xs shrink-0">
+                SI
+              </div>
+              <div>
+                <span class="font-title text-on-surface font-medium block">Siddharth Verma</span>
+                <span class="text-on-surface-variant text-[11px]">User: siddharth</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-3.5 px-4">
+            <span class="block text-on-surface font-mono text-[12px]">sid.verma@acmi.edu.in</span>
+            <span class="text-on-surface-variant text-[12px]">+91 98231 44550</span>
+          </td>
+          <td class="py-3.5 px-4">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-on-surface">0 tests</span>
+              
+              <span class="text-on-surface-variant text-[12px]">Pending</span>
+              
+            </div>
+          </td>
+          <td class="py-3.5 px-4 text-right whitespace-nowrap">
+            <!-- Edit Profile Trigger -->
+            <button
+              onclick="openEditStudentModal('10', 'Siddharth Verma', 'MCA2026-088', 'sid.verma@acmi.edu.in', '')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1"
+              title="Edit Student Information">
+              <span class="material-symbols-outlined text-[15px]">edit</span>
+              <span>Edit</span>
+            </button>
+
+            <!-- Reset Password Trigger -->
+            <button onclick="openResetPasswordModal('10', 'Siddharth Verma')"
+              class="h-8 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm transition-colors border border-surface-container-highest inline-flex items-center gap-1 ml-1"
+              title="Reset Password">
+              <span class="material-symbols-outlined text-[15px]">lock_reset</span>
+              <span>Reset</span>
+            </button>
+
+            <!-- Delete Student Form -->
+            <form action="/admin/students/10/delete" method="POST" class="inline ml-1"
+              onsubmit="return confirm('Permanently delete student account Siddharth Verma (MCA2026-088)?');">
+              <button type="submit"
+                class="h-8 w-8 rounded-lg bg-surface-container-low hover:bg-rose-50 text-on-surface-variant hover:text-rose-600 transition-colors inline-flex items-center justify-center"
+                title="Delete Student">
+                <span class="material-symbols-outlined text-[15px]">delete</span>
+              </button>
+            </form>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 3: Support & Academic Query Tickets -->
+<div id="tickets-section"
+  class="bg-white rounded-[20px] p-6 sm:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_6px_20px_rgba(0,0,0,0.02)] mb-6 border border-[#E5E5E7]">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-space-md">
+    <div>
+      <div class="flex items-center gap-2">
+        <h2 class="font-headline-md text-headline-md text-on-surface">Academic &amp; Technical Support Tickets</h2>
+        <span
+          class="px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-secondary-container text-on-secondary-container">
+          106 Open / 195 Total
+        </span>
+      </div>
+      <p class="font-body-sm text-body-sm text-on-surface-variant">
+        Monitor student queries, exam dispute inquiries, and academic assistance tickets.
+      </p>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="document.getElementById('newTicketModal').classList.remove('hidden')"
+        class="h-9 px-3.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:opacity-95 transition-opacity flex items-center gap-1 shadow-xs">
+        <span class="material-symbols-outlined text-[16px]">add</span>
+        <span>Log Query</span>
+      </button>
+      <a href="/admin/tickets"
+        class="h-9 px-3.5 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+        <span>Full Ticket Desk</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left font-body-sm">
+      <thead>
+        <tr class="text-on-surface-variant text-label-sm bg-surface-container-low/50 rounded-xl">
+          <th class="py-2.5 px-4 font-medium rounded-l-xl">Ticket #</th>
+          <th class="py-2.5 px-4 font-medium">Submitter</th>
+          <th class="py-2.5 px-4 font-medium">Subject &amp; Category</th>
+          <th class="py-2.5 px-4 font-medium">Priority</th>
+          <th class="py-2.5 px-4 font-medium">Status</th>
+          <th class="py-2.5 px-4 font-medium text-right rounded-r-xl">Action</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-surface-container-highest/40">
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-0195</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">Pooja Deshmukh</span>
+            <span class="text-on-surface-variant text-[11px]">STUDENT &bull; pooja.d@acmi.edu.in</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">Academic Support</span>
+            <span class="font-medium text-on-surface line-clamp-1">Calculator access question in exam</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Medium
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-amber-100 text-amber-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+              Open
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('195', 'Open', '')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-0194</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">Dr. Priya Deshmukh</span>
+            <span class="text-on-surface-variant text-[11px]">STAFF &bull; priya.deshmukh@acmi.edu.in</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">Academic Support</span>
+            <span class="font-medium text-on-surface line-clamp-1">Approval for 15 new PostgreSQL normalization MCQs</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Medium
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-amber-100 text-amber-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+              Open
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('194', 'Open', '')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-0193</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">Rohan Kulkarni</span>
+            <span class="text-on-surface-variant text-[11px]">STUDENT &bull; rohan.k@acmi.edu.in</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">Account Security</span>
+            <span class="font-medium text-on-surface line-clamp-1">Profile contact number verification request</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700">
+              Low
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-emerald-100 text-emerald-800">
+              Resolved
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('193', 'Resolved', 'Profile record verified and updated by administrator.')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-0192</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">Pooja Deshmukh</span>
+            <span class="text-on-surface-variant text-[11px]">STUDENT &bull; pooja.d@acmi.edu.in</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">Academic Support</span>
+            <span class="font-medium text-on-surface line-clamp-1">Clarification on Question #3 regarding list mutability</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Medium
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-blue-100 text-blue-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+              In Progress
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('192', 'In Progress', 'Assigned to Dr. Priya Deshmukh for review.')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        
+        <tr class="hover:bg-surface-container-low/30 transition-colors">
+          <td class="py-3 px-4 font-mono font-semibold text-primary">#TK-0191</td>
+          <td class="py-3 px-4">
+            <span class="font-title text-on-surface font-medium block">Aarav Sharma</span>
+            <span class="text-on-surface-variant text-[11px]">STUDENT &bull; aarav.sharma@acmi.edu.in</span>
+          </td>
+          <td class="py-3 px-4 max-w-sm">
+            <span class="text-[11px] font-semibold text-secondary block uppercase tracking-wider">Technical Issue</span>
+            <span class="font-medium text-on-surface line-clamp-1">Lab terminal network lag during Web Architectures test</span>
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+              High
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 whitespace-nowrap">
+            
+            <span
+              class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-amber-100 text-amber-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-pulse"></span>
+              Open
+            </span>
+            
+          </td>
+          <td class="py-3 px-4 text-right whitespace-nowrap">
+            <button
+              onclick="openUpdateTicketModal('191', 'Open', '')"
+              class="h-7 px-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-[12px] transition-colors border border-surface-container-highest">
+              Update
+            </button>
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 4: System Governance & Maintenance Controls -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mb-space-lg">
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-[24px]">database</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">SQLite WAL Storage</span>
+      <span class="text-on-surface-variant text-body-sm">FK integrity &amp; atomic transactions active</span>
+    </div>
+  </div>
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-emerald-600">
+      <span class="material-symbols-outlined text-[24px]">verified_user</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">Role Segregation</span>
+      <span class="text-on-surface-variant text-body-sm">Admin, Faculty/Staff, and Candidate RBAC</span>
+    </div>
+  </div>
+  <div
+    class="bg-surface-container-lowest rounded-[18px] p-space-md border border-surface-container-highest/60 flex items-center gap-space-md">
+    <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+      <span class="material-symbols-outlined text-[24px]">security</span>
+    </div>
+    <div>
+      <span class="font-title text-on-surface block text-body-md font-semibold">Proctoring Telemetry</span>
+      <span class="text-on-surface-variant text-body-sm">Fullscreen lock &amp; defocus detection active</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================================= -->
+<!-- MODALS -->
+<!-- ========================================================================= -->
+
+<!-- Modal: Add New Student -->
+<div id="addStudentModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Add New Student</h3>
+      <button onclick="document.getElementById('addStudentModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form method="POST" action="/admin/students/create">
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name</label>
+          <input type="text" name="full_name" required placeholder="e.g. Shruti V. Kulkarni"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Roll Number / Student ID</label>
+          <input type="text" name="roll_number" required placeholder="e.g. MCA2026-007"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm uppercase focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email Address</label>
+          <input type="email" name="email" required placeholder="e.g. shruti.k@acmi.edu.in"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+          <input type="text" name="contact_number" placeholder="+91 98231 XXXXX"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+          <input type="text" name="password" value="student123"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('addStudentModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Register Student
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Edit Student Info -->
+<div id="editStudentModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Edit Student Profile</h3>
+      <button onclick="document.getElementById('editStudentModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="editStudentForm" method="POST" action="">
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name</label>
+          <input type="text" id="editFullName" name="full_name" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Roll Number / Student ID</label>
+          <input type="text" id="editRollNumber" name="roll_number" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm uppercase focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email Address</label>
+          <input type="email" id="editEmail" name="email" required
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+          <input type="text" id="editContactNumber" name="contact_number"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('editStudentModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Reset Password -->
+<div id="resetPasswordModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-sm w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Reset Password</h3>
+      <button onclick="document.getElementById('resetPasswordModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="resetPasswordForm" method="POST" action="">
+      <p class="text-body-sm text-on-surface-variant mb-3">
+        Set a new password for <strong id="resetStudentName" class="text-on-surface">Student</strong>.
+      </p>
+      <div class="space-y-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">New Password</label>
+          <input type="password" name="new_password" required placeholder="Minimum 6 characters"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('resetPasswordModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Set Password
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Update Ticket Status -->
+<div id="updateTicketModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-md w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface" id="modalTicketTitle">Update Ticket</h3>
+      <button onclick="document.getElementById('updateTicketModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form id="updateTicketForm" method="POST" action="">
+      <div class="space-y-4">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Status</label>
+          <select id="modalStatusSelect" name="status"
+            class="w-full h-11 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-md focus:border-primary focus:outline-none">
+            <option value="Open">Open</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Administrative Remarks /
+            Notes</label>
+          <textarea id="modalNotesTextarea" name="resolution_notes" rows="3" placeholder="Provide action notes..."
+            class="w-full p-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('updateTicketModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Save Status
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Create New Ticket -->
+<div id="newTicketModal"
+  class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+  <div
+    class="bg-surface-container-lowest rounded-[24px] max-w-lg w-full p-6 shadow-xl border border-surface-container-highest">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Log Support Ticket</h3>
+      <button onclick="document.getElementById('newTicketModal').classList.add('hidden')"
+        class="w-8 h-8 rounded-full hover:bg-surface-container-low flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <form method="POST" action="/tickets/create">
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Submitter Name</label>
+            <input type="text" name="name" required value="Prof. Jaydeep Shivaji Karpe"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Email</label>
+            <input type="email" name="email" required value="admin@acmi.edu.in"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Category</label>
+            <select name="category"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none">
+              <option value="Academic Support">Academic Support</option>
+              <option value="Exam Query">Exam Query</option>
+              <option value="Technical Issue">Technical Issue</option>
+              <option value="Account Security">Account Security</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Priority</label>
+            <select name="priority"
+              class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+              <option value="Urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Subject</label>
+          <input type="text" name="subject" required placeholder="Brief summary of query..."
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Detailed Description</label>
+          <textarea name="message" rows="3" required placeholder="Provide complete information..."
+            class="w-full p-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="document.getElementById('newTicketModal').classList.add('hidden')"
+            class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+            Cancel
+          </button>
+          <button type="submit"
+            class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+            Submit Ticket
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Enroll Faculty Modal -->
+<div id="addFacultyModal"
+  class="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl shadow-xl max-w-md w-full p-6">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container-highest">
+      <h3 class="font-headline-md text-headline-md text-on-surface">Enroll New Faculty Member</h3>
+      <button onclick="document.getElementById('addFacultyModal').classList.add('hidden')"
+        class="text-secondary hover:text-on-surface">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form method="POST" action="/admin/staff/create" class="pt-4 space-y-3">
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Full Name &amp; Title</label>
+        <input type="text" name="full_name" required placeholder="e.g. Dr. Priya S. Deshmukh"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Username / Faculty ID</label>
+          <input type="text" name="username" required placeholder="e.g. prof_deshmukh"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Designation</label>
+          <input type="text" name="designation" placeholder="e.g. Associate Professor" value="Assistant Professor"
+            class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+        </div>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Department</label>
+        <input type="text" name="department" value="Department of MCA"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Academic Email</label>
+        <input type="email" name="email" required placeholder="e.g. priya.deshmukh@acmi.edu.in"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Contact Number</label>
+        <input type="text" name="contact_number" placeholder="+91 98220 XXXXX"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-on-surface-variant mb-1">Initial Password</label>
+        <input type="text" name="password" value="staff123"
+          class="w-full h-10 px-3 rounded-xl bg-surface-container-low border border-surface-container-highest text-on-surface font-body-sm focus:border-primary focus:outline-none" />
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="document.getElementById('addFacultyModal').classList.add('hidden')"
+          class="h-10 px-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low font-label-md">
+          Cancel
+        </button>
+        <button type="submit"
+          class="h-10 px-5 rounded-xl bg-primary text-on-primary font-label-md shadow-sm hover:opacity-95">
+          Enroll Faculty
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openEditStudentModal(id, name, roll, email, contact) {
+    document.getElementById('editStudentForm').action = '/admin/students/' + id + '/edit';
+    document.getElementById('editFullName').value = name;
+    document.getElementById('editRollNumber').value = roll;
+    document.getElementById('editEmail').value = email;
+    document.getElementById('editContactNumber').value = contact || '';
+    document.getElementById('editStudentModal').classList.remove('hidden');
+  }
+
+  function openResetPasswordModal(id, name) {
+    document.getElementById('resetPasswordForm').action = '/admin/students/' + id + '/reset-password';
+    document.getElementById('resetStudentName').textContent = name;
+    document.getElementById('resetPasswordModal').classList.remove('hidden');
+  }
+
+  function openUpdateTicketModal(ticketId, currentStatus, currentNotes) {
+    const form = document.getElementById('updateTicketForm');
+    form.action = '/admin/tickets/' + ticketId + '/status';
+    document.getElementById('modalTicketTitle').textContent = 'Update Ticket #TK-' + String(ticketId).padStart(4, '0');
+    document.getElementById('modalStatusSelect').value = currentStatus;
+    document.getElementById('modalNotesTextarea').value = currentNotes || '';
+    document.getElementById('updateTicketModal').classList.remove('hidden');
+  }
+</script>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // Admin Sidebar Collapse Toggle Logic:
+  // When OPEN: shows '<' (chevron_left)
+  // When CLOSED: shows '=' (menu)
+  (function() {
+    const sidebar = document.getElementById('adminSidebar');
+    const wrapper = document.getElementById('adminMainWrapper');
+    const header = document.getElementById('adminTopHeader');
+    const toggleBtn = document.getElementById('sidebarToggleBtn');
+    const headerUnfoldBtn = document.getElementById('headerUnfoldBtn');
+    const toggleIcon = document.getElementById('sidebarToggleIcon');
+
+    let isOpen = true;
+
+    function setSidebarState(open) {
+      isOpen = open;
+      if (isOpen) {
+        sidebar.classList.remove('-translate-x-full');
+        wrapper.classList.add('pl-60');
+        wrapper.classList.remove('pl-0');
+        header.classList.add('left-60');
+        header.classList.remove('left-0');
+        headerUnfoldBtn.classList.add('hidden');
+        headerUnfoldBtn.classList.remove('flex');
+        toggleIcon.textContent = 'chevron_left';
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        wrapper.classList.remove('pl-60');
+        wrapper.classList.add('pl-0');
+        header.classList.remove('left-60');
+        header.classList.add('left-0');
+        headerUnfoldBtn.classList.remove('hidden');
+        headerUnfoldBtn.classList.add('flex');
+        toggleIcon.textContent = 'menu';
+      }
+    }
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => setSidebarState(!isOpen));
+    }
+    if (headerUnfoldBtn) {
+      headerUnfoldBtn.addEventListener('click', () => setSidebarState(true));
+    }
+  })();
+</script>
+
+  
+</body>
+</html>
